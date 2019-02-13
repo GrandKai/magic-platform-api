@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.magic.platform.api.business.operation.mapper.custom.dao.OperationVOMapper">
+  <resultMap id="BaseResultMap" type="com.magic.platform.api.business.operation.mapper.custom.entity.OperationVO">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
+
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="sort_number" jdbcType="SMALLINT" property="sortNumber" />
+  </resultMap>
+
+  <resultMap id="GrantedOperationBaseResultMap" type="com.magic.platform.api.business.operation.mapper.custom.entity.GrantedOperation">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="authority_id" jdbcType="VARCHAR" property="authorityId" />
+    <id column="operation_id" jdbcType="VARCHAR" property="operationId" />
+    <id column="operation_name" jdbcType="VARCHAR" property="operationName" />
+
+    <result column="menu_id" jdbcType="VARCHAR" property="menuId" />
+    <result column="menu_name" jdbcType="VARCHAR" property="menuName" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="sort_number" jdbcType="SMALLINT" property="sortNumber" />
+  </resultMap>
+
+  <select id="selectEntityList" resultMap="BaseResultMap" parameterType="com.magic.platform.api.business.operation.model.OperationQueryModel">
+    (
+      select m.id,
+        m.name,
+        'menu'   as type,
+        m.router as url,
+        m.parent_id,
+        m.create_time,
+        m.update_time,
+        m.sort_number
+      from menu m where is_deleted = 0
+      <if test="platId != null and platId != ''">
+        and m.plat_id = #{platId}
+      </if>
+      order by m.sort_number asc, m.update_time desc limit 9999
+    )
+
+    union all
+    (
+      select
+        o.id,
+        o.name,
+        'operation' as type,
+        o.type      as url,
+        o.menu_id   as parent_id,
+        o.create_time,
+        o.update_time,
+        o.sort_number
+      from operation o inner join menu m2 on o.menu_id = m2.id
+      where m2.is_deleted = 0
+      <if test="platId != null and platId != ''">
+        and m2.plat_id = #{platId}
+      </if>
+      order by o.sort_number asc, o.update_time desc limit 9999
+    )
+  </select>
+
+  <select id="getOperationVO" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select o.id,
+           o.name,
+           'operation' as type,
+           o.type      as url,
+           o.menu_id   as parent_id,
+           o.create_time,
+           o.update_time,
+           o.sort_number
+    from operation o where o.id = #{id}
+  </select>
+
+  <!-- 根据菜单查询操作权限（按钮级别） -->
+  <select id="selectGrantedOperationList" resultMap="GrantedOperationBaseResultMap" parameterType="com.magic.platform.api.business.operation.model.GrantedOperationQueryModel">
+    select ao.authority_id,
+           o.id   as operation_id,
+           o.name as operation_name,
+           o.menu_id,
+           m.name as menu_name,
+           o.type,
+           o.create_time,
+           o.update_time,
+           o.sort_number
+    from operation o
+           inner join authority_operation ao on o.id = ao.operation_id
+           inner join menu m on o.menu_id = m.id
+    where m.is_deleted = '0'
+    <if test="menuId != null and menuId != ''">
+      and m.id = #{menuId}
+    </if>
+    order by o.menu_id, o.sort_number asc, o.update_time desc
+  </select>
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.magic.platform.api.business.dictionary.mapper.custom.dao.DictionaryTypeVOMapper">
+  <resultMap id="BaseResultMap" type="com.magic.platform.api.business.dictionary.mapper.custom.entity.DictionaryTypeVO">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id"/>
+    <result column="name" jdbcType="VARCHAR" property="name"/>
+    <result column="code" jdbcType="VARCHAR" property="code"/>
+    <result column="sort_number" jdbcType="SMALLINT" property="sortNumber"/>
+    <result column="is_deleted" jdbcType="CHAR" property="isDeleted"/>
+    <result column="is_show" jdbcType="CHAR" property="isShow"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+  </resultMap>
+
+  <select id="selectEntityList" resultMap="BaseResultMap" parameterType="java.util.Map">
+    SELECT t.* FROM dictionary_type t WHERE t.is_deleted = 0
+    <if test="name != null and name != ''">
+      and concat(ifnull(t.name, ''), ifnull(t.code, '')) like concat('%', #{name}, '%')
+    </if>
+    <if test="isShow != null and isShow != ''">
+      and t.is_show = #{isShow}
+    </if>
+    ORDER BY t.sort_number asc, t.update_time desc
+
+  </select>
+</mapper>

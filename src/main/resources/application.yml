@@ -1,0 +1,18 @@
+server:
+  port: 8088
+
+spring:
+  profiles:
+    active: dev
+framework:
+  security:
+    switch: false
+    white-list: /a, /b
+  config:
+    dubbo:
+      enable: true
+    mongo:
+      enable: true
+    swagger:
+      enable: true
+      scan-package: com.magic.platform

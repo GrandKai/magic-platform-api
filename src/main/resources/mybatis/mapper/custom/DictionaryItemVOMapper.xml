@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.magic.platform.api.business.dictionary.mapper.custom.dao.DictionaryItemVOMapper">
+  <resultMap id="BaseResultMap" type="com.magic.platform.api.business.dictionary.mapper.custom.entity.DictionaryItemVO">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id"/>
+    <result column="name" jdbcType="VARCHAR" property="name"/>
+    <result column="code" jdbcType="VARCHAR" property="code"/>
+
+    <result column="dic_name" jdbcType="VARCHAR" property="dicName"/>
+    <result column="dic_code" jdbcType="VARCHAR" property="dicCode"/>
+
+    <result column="type_id" jdbcType="VARCHAR" property="typeId"/>
+    <result column="sort_number" jdbcType="SMALLINT" property="sortNumber"/>
+    <result column="is_deleted" jdbcType="CHAR" property="isDeleted"/>
+    <result column="is_show" jdbcType="CHAR" property="isShow"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+  </resultMap>
+
+  <select id="selectEntityList" resultMap="BaseResultMap" parameterType="java.util.Map">
+    SELECT
+      dt.name dic_name,
+      dt.code as dic_code,
+      di.*
+    FROM dictionary_item di inner JOIN dictionary_type dt ON di.type_id = dt.id
+    WHERE di.is_deleted = 0 and dt.is_deleted = 0
+
+    <if test="name != null and name != ''">
+      and concat(ifnull(di.name, ''), ifnull(di.code, '')) like concat('%', #{name}, '%')
+    </if>
+    <if test="typeId != null and typeId != ''">
+      and di.type_id = #{typeId}
+    </if>
+    <if test="code != null and code != ''">
+      and dt.code = #{code}
+    </if>
+
+    <if test="typeIsShow != null and typeIsShow != ''">
+      and dt.is_show = #{typeIsShow}
+    </if>
+    <if test="itemIsShow != null and itemIsShow != ''">
+      and di.is_show = #{itemIsShow}
+    </if>
+
+    ORDER BY dt.sort_number, dt.update_time desc, di.type_id, di.sort_number asc, di.update_time desc
+  </select>
+</mapper>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.magic.platform.api.business.organization.mapper.custom.dao.OrganizationVOMapper">
+  <resultMap id="BaseResultMap" type="com.magic.platform.api.business.organization.mapper.custom.entity.OrganizationVO">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
+    <result column="level" jdbcType="CHAR" property="level" />
+    <result column="is_leaf" jdbcType="CHAR" property="isLeaf" />
+    <result column="sort_number" jdbcType="SMALLINT" property="sortNumber" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="is_deleted" jdbcType="CHAR" property="isDeleted" />
+  </resultMap>
+
+  <select id="selectEntityList" resultMap="BaseResultMap" parameterType="com.magic.platform.api.business.organization.model.OrganizationQueryModel">
+    select t.* from organization t where t.is_deleted = 0
+    <!--<if test="platId != null and platId != ''">-->
+      <!--and t.plat_id = #{platId}-->
+    <!--</if>-->
+    order by t.sort_number asc, t.update_time desc
+  </select>
+</mapper>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.magic.platform.api.business.plat.mapper.custom.dao.PlatVOMapper">
+  <resultMap id="BaseResultMap" type="com.magic.platform.api.business.plat.mapper.custom.entity.PlatVO">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id"/>
+    <result column="name" jdbcType="VARCHAR" property="name"/>
+    <result column="description" jdbcType="VARCHAR" property="description"/>
+    <result column="url" jdbcType="VARCHAR" property="url"/>
+    <result column="image" jdbcType="VARCHAR" property="image"/>
+    <result column="version" jdbcType="VARCHAR" property="version"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    <result column="sort_number" jdbcType="SMALLINT" property="sortNumber"/>
+    <result column="is_enabled" jdbcType="CHAR" property="isEnabled"/>
+    <result column="is_deleted" jdbcType="CHAR" property="isDeleted"/>
+  </resultMap>
+
+
+  <select id="selectEntityList" resultMap="BaseResultMap">
+    SELECT
+      t.id,
+      t.name,
+      t.description,
+      t.url,
+      t.image,
+      t.version,
+      t.sort_number,
+      t.is_enabled,
+      t.is_deleted,
+      t.create_time,
+      t.update_time
+    FROM
+      plat t
+    <where>
+      t.is_deleted = 0
+    </where>
+    ORDER BY
+    t.sort_number , t.update_time desc
+  </select>
+
+
+  <select id="selectGrantedPlatListByUserId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select tt.* from
+          (select
+              p.id,
+              p.name,
+              p.description,
+              p.url,
+              p.image,
+              p.version,
+              p.sort_number,
+              p.create_time,
+              p.update_time
+          from user_role t
+                 inner join role r on t.role_id = r.id
+                 inner join plat p on r.plat_id = p.id
+          where p.is_deleted = '0'
+            and p.is_enabled = '1'
+            and t.user_id = #{userId}) tt group by tt.id
+        order by tt.sort_number asc, tt.update_time desc
+    </select>
+
+
+
+    <select id="selectAllPlatsAndRoles" resultType="com.magic.platform.api.business.plat.mapper.custom.entity.PlatRoleVO">
+        (SELECT p.id , p.name, '' parentId FROM plat p WHERE p.is_deleted = 0 AND p.is_enabled = 1 ORDER BY
+        p.sort_number ASC , p.update_time DESC LIMIT 9999)
+        UNION
+        (SELECT r.id, r.name, r.plat_id parentId FROM role r ORDER BY r.sort_number ASC, r.update_time DESC LIMIT 9999)
+    </select>
+</mapper>

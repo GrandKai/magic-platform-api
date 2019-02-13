@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.magic.platform.api.business.authority.mapper.dao.AuthorityVOMapper">
+  <resultMap id="BaseResultMap" type="com.magic.platform.api.business.authority.mapper.entity.AuthorityVO">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="plat_id" jdbcType="VARCHAR" property="platId" />
+    <result column="plat_name" jdbcType="VARCHAR" property="platName" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="sort_number" jdbcType="SMALLINT" property="sortNumber" />
+  </resultMap>
+
+  <select id="selectEntityList" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select
+      t.id,
+      t.name,
+      t.description,
+      t.plat_id,
+      p.name as plat_name,
+      t.create_time,
+      t.update_time,
+      t.sort_number
+    from authority t left join plat p on t.plat_id = p.id
+    where p.is_deleted = '0' and p.is_enabled = '1'
+    <if test="name != null and name != ''">
+      and concat(ifnull(t.name, ''), ifnull(t.description, '')) like concat('%', #{name}, '%')
+    </if>
+    <if test="platId != null and platId != ''">
+      and t.plat_id = #{platId}
+    </if>
+    order by p.sort_number asc, p.update_time desc, t.sort_number asc, t.update_time desc
+
+  </select>
+
+    <select id="selectAllGrantedOperationIds" resultType="java.lang.String" parameterType="java.lang.String">
+        select ao.operation_id as id from authority_operation ao
+        where ao.authority_id = #{authorityId}
+    </select>
+</mapper>

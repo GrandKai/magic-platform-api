@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.magic.platform.api.business.permission.mapper.custom.dao.PermissionVOMapper">
+  <resultMap id="BaseResultMap" type="com.magic.platform.api.business.permission.mapper.custom.entity.PermissionVO">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id"/>
+    <result column="name" jdbcType="VARCHAR" property="name"/>
+    <result column="url" jdbcType="VARCHAR" property="url"/>
+    <result column="operation_id" jdbcType="VARCHAR" property="operationId"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    <result column="sort_number" jdbcType="SMALLINT" property="sortNumber"/>
+  </resultMap>
+
+  <!--select p.url from (
+  select ur.role_id from user_role ur where ur.user_id = #{userId}
+  ) tmp
+  inner join role_authority ra on tmp.role_id = ra.role_id
+  inner join authority_operation ao on ao.authority_id = ra.authority_id
+  inner join permission p on p.operation_id = ao.operation_id-->
+  <select id="selectAllGrantedPermissions" parameterType="java.lang.String" resultType="java.lang.String">
+
+    select p.url from user_role ur
+       inner join user u on ur.user_id = u.id
+       inner join role_authority ra on ur.role_id = ra.role_id
+       inner join authority_operation ao on ao.authority_id = ra.authority_id
+       inner join permission p on p.operation_id = ao.operation_id
+    where u.name = #{userName}
+    group by p.url
+
+  </select>
+
+
+  <select id="getOperationVO" resultMap="com.magic.platform.api.business.operation.mapper.custom.dao.OperationVOMapper.BaseResultMap" parameterType="java.lang.String">
+    select
+      p.id,
+      p.name,
+      'permission'   as type,
+      p.url,
+      p.operation_id as parent_id,
+      p.create_time,
+      p.update_time,
+      p.sort_number
+    from permission p where p.id = #{id}
+  </select>
+
+
+  <select id="selectEntityList" resultMap="com.magic.platform.api.business.operation.mapper.custom.dao.OperationVOMapper.BaseResultMap" parameterType="com.magic.platform.api.business.permission.model.PermissionQueryModel">
+    (
+      select
+        m.id,
+        m.name,
+        'menu'   as type,
+        m.router as url,
+        m.parent_id,
+        m.create_time,
+        m.update_time,
+        m.sort_number
+      from menu m where is_deleted = 0
+      <if test="platId != null and platId != ''">
+        and m.plat_id = #{platId}
+      </if>
+      order by m.sort_number asc, m.update_time desc limit 9999
+    )
+
+    union all
+    (
+      select
+        o.id,
+        o.name,
+        'operation' as type,
+        o.type      as url,
+        o.menu_id   as parent_id,
+        o.create_time,
+        o.update_time,
+        o.sort_number
+      from operation o inner join menu m2 on o.menu_id = m2.id
+      where m2.is_deleted = 0
+      <if test="platId != null and platId != ''">
+        and m2.plat_id = #{platId}
+      </if>
+      order by o.sort_number asc, o.update_time desc limit 9999
+    )
+    union all
+    (
+      select
+        p.id,
+        p.name,
+        'permission'   as type,
+        p.url,
+        p.operation_id as parent_id,
+        p.create_time,
+        p.update_time,
+        p.sort_number
+      from permission p
+      inner join operation o2 on p.operation_id = o2.id
+      inner join menu m3 on o2.menu_id = m3.id
+      where m3.is_deleted = 0
+      <if test="platId != null and platId != ''">
+        and m3.plat_id = #{platId}
+      </if>
+      order by p.sort_number asc, p.update_time desc limit 9999
+    )
+  </select>
+</mapper>
