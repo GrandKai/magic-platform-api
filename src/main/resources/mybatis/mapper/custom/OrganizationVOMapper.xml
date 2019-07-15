@@ -23,4 +23,8 @@
     <!--</if>-->
     order by t.sort_number asc, t.update_time desc
   </select>
+
+  <select id="selectChildrenByParentId" resultType="java.lang.String">
+    select getChildren(#{parentId}, #{containParent});
+  </select>
 </mapper>

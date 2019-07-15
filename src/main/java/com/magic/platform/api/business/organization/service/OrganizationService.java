@@ -7,8 +7,11 @@ import com.magic.platform.core.exception.CustomException;
 import com.magic.platform.entity.mapper.build.dao.OrganizationMapper;
 import com.magic.platform.entity.mapper.build.entity.Organization;
 import com.magic.platform.util.UUIDUtils;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -85,5 +88,36 @@ public class OrganizationService {
     if (0 < cout) {
       throw new CustomException("组织机构下有子组织，无法删除");
     }
+  }
+
+
+  private List<String> selectChildrenByParentId(String parentId, String containParent) {
+    // 查询该组织机构下的所有员工信息
+    if (!StringUtils.isEmpty(parentId)) {
+      String ids = organizationVOMapper.selectChildrenByParentId(parentId, "1");
+      if (!StringUtils.isEmpty(ids)) {
+        return Arrays.asList(ids.split(","));
+      }
+    }
+    return Collections.emptyList();
+  }
+
+  /**
+   * 查询父元素下的所有子节点（包含父节点）
+   * @param parentId
+   * @return
+   */
+  public List<String> selectChildrenContainParent(String parentId) {
+    return selectChildrenByParentId(parentId, "1");
+  }
+
+
+  /**
+   * 查询父元素下的所有子节点（不包含父节点）
+   * @param parentId
+   * @return
+   */
+  public List<String> selectChildrenNotContainParent(String parentId) {
+    return selectChildrenByParentId(parentId, "0");
   }
 }

@@ -1,6 +1,7 @@
 package com.magic.platform.api.business.user.model;
 
 import java.util.Date;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,4 +30,13 @@ public class UserQueryModel {
     private String userName;
     private String nickName;
 
+    /**
+     * 父组织机构id
+     */
+    private String organizationId;
+
+    /**
+     * 组织机构下的所有 children id 集合
+     */
+    private List<String> list;
 }

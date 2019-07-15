@@ -1,6 +1,7 @@
 package com.magic.platform.api.business.user.mapper.custom.dao;
 
 import com.magic.platform.api.business.user.mapper.custom.entity.UserVO;
+import com.magic.platform.api.business.user.model.UserQueryModel;
 import com.magic.platform.entity.mapper.build.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -17,5 +18,5 @@ public interface UserVOMapper extends BaseMapper<UserVO> {
 
   void addUserRole(@Param("userId") String userId, @Param("list") List<String> roleList);
 
-  List<UserVO> selectEntityList(Map<String, Object> param);
+  List<UserVO> selectEntityList(UserQueryModel model);
 }

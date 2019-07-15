@@ -5,6 +5,7 @@ import com.magic.platform.api.business.organization.model.OrganizationQueryModel
 import com.magic.platform.entity.mapper.build.BaseMapper;
 
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * @author: GrandKai
@@ -12,4 +13,12 @@ import java.util.List;
  */
 public interface OrganizationVOMapper extends BaseMapper<OrganizationVO> {
     List<OrganizationVO> selectEntityList(OrganizationQueryModel model);
+
+    /**
+     * 根据父节点查询所有子节点信息
+     * @param parentId  父节点id
+     * @param containParent 是否包含父节点本身（1：包含，0：不包含）
+     * @return
+     */
+    String selectChildrenByParentId(@Param("parentId") String parentId, @Param("containParent") String containParent);
 }

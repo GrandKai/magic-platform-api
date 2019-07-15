@@ -26,4 +26,10 @@ public class UserVO {
 
   private Date createTime;
   private Date updateTime;
+
+  private String organizationId;
+  private String organizationName;
+
+  private String staffId;
+  private String staffName;
 }

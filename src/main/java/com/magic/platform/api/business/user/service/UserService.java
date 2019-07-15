@@ -2,6 +2,7 @@ package com.magic.platform.api.business.user.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.magic.platform.api.business.organization.service.OrganizationService;
 import com.magic.platform.api.business.user.dto.UserDto;
 import com.magic.platform.api.business.user.mapper.custom.dao.UserVOMapper;
 import com.magic.platform.api.business.user.mapper.custom.entity.UserVO;
@@ -20,10 +21,9 @@ import com.magic.platform.util.DigestMessageUtil;
 import com.magic.platform.util.UUIDUtils;
 import io.jsonwebtoken.Claims;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,6 +45,9 @@ public class UserService {
 
   @Autowired
   private UserRoleMapper userRoleMapper;
+
+  @Autowired
+  private OrganizationService organizationService;
 
   /**
    * 添加账户信息
@@ -173,15 +176,16 @@ public class UserService {
     int pageNum = requestModel.getPage().getPageNum() - 1;
     int pageSize = requestModel.getPage().getPageSize();
 
-    Map<String, Object> param = new HashMap<>();
-    param.put("name", model.getUserName());
-    param.put("isEnabled", model.getIsEnabled());
-    param.put("startTime", model.getStartTime());
-    param.put("endTime", model.getEndTime());
+    // 查询该组织机构下的所有员工信息
+
+    if (!StringUtils.isEmpty(model.getOrganizationId())) {
+      List<String> list = organizationService.selectChildrenContainParent(model.getOrganizationId());
+      model.setList(list);
+    }
 
     PageHelper.offsetPage(pageNum * pageSize, pageSize, true);
 
-    List<UserVO> list = userVOMapper.selectEntityList(param);
+    List<UserVO> list = userVOMapper.selectEntityList(model);
     PageInfo pageInfo = new PageInfo(list);
 
     return pageInfo;

@@ -17,7 +17,7 @@
 
     </resultMap>
 
-    <select id="selectEntityList" parameterType="java.util.Map" resultMap="BaseResultMap">
+    <select id="selectEntityList" parameterType="com.magic.platform.api.business.user.model.UserQueryModel" resultMap="BaseResultMap">
         select
         u.id,
         u.name,
@@ -25,20 +25,38 @@
         u.is_enabled,
         u.is_deleted,
         u.create_time,
-        u.update_time
+        u.update_time,
+        s.id as staffId,
+        s.name as staffName,
+        s.organization_id,
+        o.name as organizaiton_name
         from user u
+            inner join staff_info s on s.id = u.staff_id
+            inner join organization o on o.id = s.organization_id
 
-        <where>1=1
-            and u.is_deleted = '0'
-            <if test="name != null and name != ''">
-                and locate(#{name}, concat(ifnull(u.nick_name,''), ifnull(u.name,''))) > 0
+        <where>
+            u.is_deleted = '0'
+            <if test="userName != null and userName != ''">
+                and locate(#{userName}, concat(ifnull(u.nick_name,''), ifnull(u.name,''), ifnull(s.name,''))) > 0
             </if>
             <if test="isEnabled != null and isEnabled != ''">
                 and u.is_enabled = #{isEnabled}
             </if>
 
-            <if test="startTime != null and endTime != null">
-                and u.create_time BETWEEN #{startTime} AND #{endTime}
+             <if test="list != null and list.size > 0">
+                 and s.organization_id in
+                 <foreach collection="list" separator="," item="item" open="(" close=")">
+                     #{item}
+                 </foreach>
+             </if>
+
+
+            <if test="startTime != null and startTime != null">
+                and u.create_time >= #{startTime}
+            </if>
+
+            <if test="endTime != null and endTime != null">
+                and u.create_time &lt;= #{endTime}
             </if>
         </where>
         order by u.update_time desc
