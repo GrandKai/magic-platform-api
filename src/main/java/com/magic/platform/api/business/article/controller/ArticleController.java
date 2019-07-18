@@ -60,7 +60,7 @@ public class ArticleController {
   private String upload(MultipartFile file) throws IOException {
     String fileName = System.currentTimeMillis() + file.getOriginalFilename();
     //拿到输出流，同时重命名上传的文件
-    String filePath = "H:/upload/images/" + fileName;
+    String filePath = "f:/upload/images/" + fileName;
 
     File localFile = new File(filePath);
     file.transferTo(localFile);
