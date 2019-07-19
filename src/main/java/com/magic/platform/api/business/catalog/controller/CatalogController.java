@@ -1,8 +1,10 @@
 package com.magic.platform.api.business.catalog.controller;
 
+import com.magic.platform.api.business.article.model.FileUploadResult;
 import com.magic.platform.api.business.catalog.mapper.entity.ContCatalogVO;
 import com.magic.platform.api.business.catalog.model.ContCatalogQueryModel;
 import com.magic.platform.api.business.catalog.service.ContCatalogService;
+import com.magic.platform.api.util.FileUtils;
 import com.magic.platform.core.anotation.OpsLog;
 import com.magic.platform.core.anotation.OpsLogType;
 import com.magic.platform.core.model.RequestModel;
@@ -12,13 +14,11 @@ import com.magic.platform.entity.mapper.build.entity.ContCatalog;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import javax.imageio.ImageIO;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -86,8 +86,9 @@ public class CatalogController {
 
 
   @ApiOperation(value = "上传图片", notes = "<br/>上传图片", httpMethod = "POST")
-  @PostMapping(value = "uploadImage")
-  public ResponseModel uploadImage(@RequestParam("file") MultipartFile file) {
+  @PostMapping(value = "upload")
+  public ResponseModel upload(@RequestParam("file") MultipartFile file) {
+    FileUploadResult result = new FileUploadResult();
     try {
       InputStream inputStream = file.getInputStream();
       BufferedImage sourceImg = ImageIO.read(inputStream);
@@ -99,51 +100,17 @@ public class CatalogController {
       if (imgWidth != width && imgHeight != height) {
 //        return new ResponseModel(500, "请上传400宽400高的图片，仅限一张图片");
       }
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    // 取得当前上传文件的文件名称
-    String originalFilename = file.getOriginalFilename();
-    // 如果名称不为“”,说明该文件存在，否则说明该文件不存在
-    if(StringUtils.isNotEmpty(originalFilename.trim())){
 
-      log.info("文件名称：{}", originalFilename);
-      // 重命名上传后的文件名
-      String fileName = "demoUpload-" + file.getOriginalFilename();
-      //定义上传路径
-      String path = "f:/" + fileName;
-      File localFile = new File(path);
-      try {
-        file.transferTo(localFile);
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
-//      String imageUrl = getImageUrl(file);
-    return new ResponseModel();
-  }
+      result = FileUtils.upload(file);
 
- /* public String getImageUrl(MultipartFile file) {
-    UploadDto uploadDto = new UploadDto();
-    uploadDto.setPlatId(thisPlatId);
-    uploadDto.setModel("product");
-    String fileName = file.getOriginalFilename();
-    uploadDto.setFileName(fileName);
-    uploadDto.setRetainName(false);
-    String imageUrl = "";
-    try {
-      InputStream inputStream = file.getInputStream();
-      //调取图片服务dubbo接口返回路径
-      fileName = uploadService.file(uploadDto, inputStream);
-      //dev nginx访问前缀
-      String address = "http://172.16.249.3/back_file";
-      //图片的访问url
-      imageUrl = imageServer + fileName;
     } catch (IOException e) {
       log.error("上传图片异常：", e);
-      e.printStackTrace();
+      result.setUploaded(0);
+      result.setError(new FileUploadResult.Error(e.getMessage()));
+
     }
-    return imageUrl;
-  }*/
+
+    return new ResponseModel<>("上传文件成功!", result);
+  }
 
 }
