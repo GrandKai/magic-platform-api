@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -86,9 +87,9 @@ public class CatalogController {
 
   @ApiOperation(value = "上传图片", notes = "<br/>上传图片", httpMethod = "POST")
   @PostMapping(value = "uploadImage")
-  public ResponseModel uploadImage(MultipartFile uploadFile) {
+  public ResponseModel uploadImage(@RequestParam("file") MultipartFile file) {
     try {
-      InputStream inputStream = uploadFile.getInputStream();
+      InputStream inputStream = file.getInputStream();
       BufferedImage sourceImg = ImageIO.read(inputStream);
       int imgWidth = sourceImg.getWidth();
       int imgHeight = sourceImg.getHeight();
@@ -96,44 +97,44 @@ public class CatalogController {
       int width = 400, height = 400;
 
       if (imgWidth != width && imgHeight != height) {
-        return new ResponseModel(500, "请上传400宽400高的图片，仅限一张图片");
+//        return new ResponseModel(500, "请上传400宽400高的图片，仅限一张图片");
       }
     } catch (IOException e) {
       e.printStackTrace();
     }
     // 取得当前上传文件的文件名称
-    String originalFilename = uploadFile.getOriginalFilename();
+    String originalFilename = file.getOriginalFilename();
     // 如果名称不为“”,说明该文件存在，否则说明该文件不存在
     if(StringUtils.isNotEmpty(originalFilename.trim())){
 
       log.info("文件名称：{}", originalFilename);
       // 重命名上传后的文件名
-      String fileName = "demoUpload-" + uploadFile.getOriginalFilename();
+      String fileName = "demoUpload-" + file.getOriginalFilename();
       //定义上传路径
       String path = "f:/" + fileName;
       File localFile = new File(path);
       try {
-        uploadFile.transferTo(localFile);
+        file.transferTo(localFile);
       } catch (IOException e) {
         e.printStackTrace();
       }
     }
-//      String imageUrl = getImageUrl(uploadFile);
+//      String imageUrl = getImageUrl(file);
     return new ResponseModel();
   }
 
- /* public String getImageUrl(MultipartFile uploadFile) {
+ /* public String getImageUrl(MultipartFile file) {
     UploadDto uploadDto = new UploadDto();
     uploadDto.setPlatId(thisPlatId);
     uploadDto.setModel("product");
-    String fileName = uploadFile.getOriginalFilename();
+    String fileName = file.getOriginalFilename();
     uploadDto.setFileName(fileName);
     uploadDto.setRetainName(false);
     String imageUrl = "";
     try {
-      InputStream inputStream = uploadFile.getInputStream();
+      InputStream inputStream = file.getInputStream();
       //调取图片服务dubbo接口返回路径
-      fileName = uploadService.uploadFile(uploadDto, inputStream);
+      fileName = uploadService.file(uploadDto, inputStream);
       //dev nginx访问前缀
       String address = "http://172.16.249.3/back_file";
       //图片的访问url
