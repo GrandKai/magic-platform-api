@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.magic.platform.api.business.information.mapper.custom.dao.ContInformationVOMapper">
+  <resultMap id="BaseResultMap" type="com.magic.platform.api.business.information.mapper.custom.entity.ContInformationVO">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="catalog_id" jdbcType="VARCHAR" property="catalogId" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="cover_image" jdbcType="VARCHAR" property="coverImage" />
+    <result column="sumary" jdbcType="VARCHAR" property="sumary" />
+    <result column="author" jdbcType="VARCHAR" property="author" />
+    <result column="source" jdbcType="VARCHAR" property="source" />
+    <result column="source_address" jdbcType="VARCHAR" property="sourceAddress" />
+    <result column="top_level" jdbcType="SMALLINT" property="topLevel" />
+    <result column="top_end_time" jdbcType="TIMESTAMP" property="topEndTime" />
+    <result column="release_time" jdbcType="TIMESTAMP" property="releaseTime" />
+    <result column="validity_end_time" jdbcType="TIMESTAMP" property="validityEndTime" />
+    <result column="publisher" jdbcType="VARCHAR" property="publisher" />
+    <result column="click_amout" jdbcType="INTEGER" property="clickAmout" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="is_deleted" jdbcType="CHAR" property="isDeleted" />
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+</mapper>
