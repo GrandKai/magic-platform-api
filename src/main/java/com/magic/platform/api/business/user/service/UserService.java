@@ -14,8 +14,10 @@ import com.magic.platform.core.jwt.Token;
 import com.magic.platform.core.model.RequestModel;
 import com.magic.platform.core.util.Objects;
 import com.magic.platform.encrypt.enumeration.DigestMessageType;
+import com.magic.platform.entity.mapper.build.dao.StaffInfoMapper;
 import com.magic.platform.entity.mapper.build.dao.UserMapper;
 import com.magic.platform.entity.mapper.build.dao.UserRoleMapper;
+import com.magic.platform.entity.mapper.build.entity.StaffInfo;
 import com.magic.platform.entity.mapper.build.entity.User;
 import com.magic.platform.entity.mapper.build.entity.UserRole;
 import com.magic.platform.util.DigestMessageUtil;
@@ -40,6 +42,8 @@ public class UserService {
 
   @Autowired
   private UserMapper userMapper;
+  @Autowired
+  private StaffInfoMapper staffInfoMapper;
 
   @Autowired
   private UserVOMapper userVOMapper;
@@ -56,9 +60,11 @@ public class UserService {
   public void addUser(UserQueryModel model) {
 
     Date date = new Date();
+    String staffInfoId = UUIDUtils.uuid();
 
     User user = new User();
     user.setId(UUIDUtils.uuid());
+    user.setStaffId(staffInfoId);
     user.setName(model.getUserName());
     user.setNickName(model.getNickName());
     try {
@@ -72,6 +78,19 @@ public class UserService {
     user.setUpdateTime(date);
 
     userMapper.insert(user);
+
+    StaffInfo staffInfo = new StaffInfo();
+
+    staffInfo.setId(staffInfoId);
+    staffInfo.setName(model.getUserName());
+    staffInfo.setIsEnabled("1");
+
+    staffInfo.setCreateTime(date);
+    staffInfo.setUpdateTime(date);
+    staffInfo.setOrganizationId(null);
+    staffInfo.setOrganizationName(null);
+
+    staffInfoMapper.insert(staffInfo);
   }
 
   /**

@@ -1,6 +1,7 @@
 package com.magic.platform.api.business.user.mapper.custom.entity;
 
 import java.util.Date;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,4 +33,9 @@ public class UserVO {
 
   private String staffId;
   private String staffName;
+
+  /**
+   * 用户所有的角色
+   */
+  private List<String> roles;
 }
