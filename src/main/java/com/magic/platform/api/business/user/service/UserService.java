@@ -177,9 +177,13 @@ public class UserService {
     int pageSize = requestModel.getPage().getPageSize();
 
     // 查询该组织机构下的所有员工信息
-
     if (!StringUtils.isEmpty(model.getOrganizationId())) {
-      List<String> list = organizationService.selectChildrenContainParent(model.getOrganizationId());
+
+      List<String> list = null;
+      // 如果不是 -1 查询的是具体某个结点
+      if (!"-1".equals(model.getOrganizationId())) {
+        list = organizationService.selectChildrenContainParent(model.getOrganizationId());
+      }
       model.setList(list);
     }
 
