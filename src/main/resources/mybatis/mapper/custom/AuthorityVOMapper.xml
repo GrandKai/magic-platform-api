@@ -38,7 +38,6 @@
   </select>
 
     <select id="selectAllGrantedOperationIds" resultType="java.lang.String" parameterType="java.lang.String">
-        select ao.operation_id as id from authority_operation ao
-        where ao.authority_id = #{authorityId}
+        select ao.operation_id as id from authority_operation ao where ao.authority_id = #{authorityId}
     </select>
 </mapper>

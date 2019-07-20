@@ -10,6 +10,11 @@ import lombok.Setter;
 public class UserQueryModel {
 
     /**
+     * 树层级，0表示根节点
+     */
+    private String level;
+
+    /**
      * 账号状态
      */
     private String isEnabled;
