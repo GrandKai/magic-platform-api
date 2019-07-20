@@ -7,6 +7,7 @@ import com.magic.platform.api.business.user.dto.UserDto;
 import com.magic.platform.api.business.user.mapper.custom.dao.UserVOMapper;
 import com.magic.platform.api.business.user.mapper.custom.entity.UserVO;
 import com.magic.platform.api.business.user.model.UserQueryModel;
+import com.magic.platform.core.constant.Constant;
 import com.magic.platform.core.exception.CustomException;
 import com.magic.platform.core.exception.ExceptionEnum;
 import com.magic.platform.core.jwt.Token;
@@ -179,12 +180,11 @@ public class UserService {
     // 查询该组织机构下的所有员工信息
     if (!StringUtils.isEmpty(model.getOrganizationId())) {
 
-      List<String> list = null;
       // 如果不是 -1 查询的是具体某个结点
-      if (!"-1".equals(model.getOrganizationId())) {
-        list = organizationService.selectChildrenContainParent(model.getOrganizationId());
+      if (!Constant.ZERO.equals(model.getLevel())) {
+        List<String> list = organizationService.selectChildrenContainParent(model.getOrganizationId());
+        model.setList(list);
       }
-      model.setList(list);
     }
 
     PageHelper.offsetPage(pageNum * pageSize, pageSize, true);
