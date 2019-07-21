@@ -38,7 +38,7 @@ public class PlatService {
    * 获取全部系统的信息（分页）
    * @return
    */
-  public PageInfo getEntityPage(RequestModel<Void> requestModel) {
+  public PageInfo selectEntityPage(RequestModel<Void> requestModel) {
 
     int pageNum = requestModel.getPage().getPageNum() - 1;
     int pageSize = requestModel.getPage().getPageSize();

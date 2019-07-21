@@ -41,7 +41,7 @@ public class PlatController {
   @ApiOperation(value = "获取【系统】分页信息")
   @OpsLog(value = "获取【系统】分页信息", type = OpsLogType.SELECT)
   public ResponseModel page(@RequestBody RequestModel<Void> requestModel) {
-    PageInfo pageInfo = platService.getEntityPage(requestModel);
+    PageInfo pageInfo = platService.selectEntityPage(requestModel);
     return new ResponseModel<>(pageInfo);
   }
 

@@ -24,4 +24,7 @@
     <result column="is_deleted" jdbcType="CHAR" property="isDeleted" />
     <result column="content" jdbcType="LONGVARCHAR" property="content" />
   </resultMap>
+
+  <select id="selectEntityList" parameterType="com.magic.platform.api.business.information.model.ContInformationQueryModel" resultMap="BaseResultMap">
+  </select>
 </mapper>

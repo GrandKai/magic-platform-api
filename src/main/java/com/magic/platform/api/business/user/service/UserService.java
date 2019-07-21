@@ -191,7 +191,7 @@ public class UserService {
     userMapper.updateByPrimaryKeySelective(user);
   }
 
-  public PageInfo getEntityPage(RequestModel<UserQueryModel> requestModel) {
+  public PageInfo selectEntityPage(RequestModel<UserQueryModel> requestModel) {
 
     UserQueryModel model = requestModel.getContent();
 
@@ -201,9 +201,9 @@ public class UserService {
     // 查询该组织机构下的所有员工信息
     if (!StringUtils.isEmpty(model.getOrganizationId())) {
 
-      // 如果不是 -1 查询的是具体某个结点
+      // 如果不是 0 查询的是具体某个结点
       if (!Constant.ZERO.equals(model.getLevel())) {
-        List<String> list = organizationService.selectChildrenContainParent(model.getOrganizationId());
+        List<String> list = organizationService.selectOrganizationChildrenContainParent(model.getOrganizationId());
         model.setList(list);
       }
     }
@@ -286,9 +286,9 @@ public class UserService {
     // 查询该组织机构下的所有员工信息
     if (!StringUtils.isEmpty(model.getOrganizationId())) {
 
-      // 如果不是 -1 查询的是具体某个结点
+      // 如果不是 0 查询的是具体某个结点
       if (!Constant.ZERO.equals(model.getLevel())) {
-        List<String> list = organizationService.selectChildrenContainParent(model.getOrganizationId());
+        List<String> list = organizationService.selectOrganizationChildrenContainParent(model.getOrganizationId());
         model.setList(list);
       }
     }
@@ -316,9 +316,9 @@ public class UserService {
     // 查询该组织机构下的所有员工信息
     if (!StringUtils.isEmpty(model.getOrganizationId())) {
 
-      // 如果不是 -1 查询的是具体某个结点
+      // 如果不是 0 查询的是具体某个结点
       if (!Constant.ZERO.equals(model.getLevel())) {
-        List<String> list = organizationService.selectChildrenContainParent(model.getOrganizationId());
+        List<String> list = organizationService.selectOrganizationChildrenContainParent(model.getOrganizationId());
         model.setList(list);
       }
     }

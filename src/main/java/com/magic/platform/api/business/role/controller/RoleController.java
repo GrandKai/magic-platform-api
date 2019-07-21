@@ -39,7 +39,7 @@ public class RoleController {
   @ApiOperation(value = "获取【角色】分页信息")
   @OpsLog(value = "获取【角色】分页信息", type = OpsLogType.SELECT)
   public ResponseModel page(@RequestBody RequestModel<RoleQueryModel> requestModel) {
-    PageInfo pageInfo = roleService.getEntityPage(requestModel);
+    PageInfo pageInfo = roleService.selectEntityPage(requestModel);
     return new ResponseModel<>(pageInfo);
   }
 

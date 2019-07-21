@@ -14,4 +14,5 @@ import java.util.List;
 public interface ContInformationVOMapper extends BaseMapper<ContInformationVO> {
 
   List<ContInformationVO> selectEntityList(ContInformationQueryModel model);
+
 }

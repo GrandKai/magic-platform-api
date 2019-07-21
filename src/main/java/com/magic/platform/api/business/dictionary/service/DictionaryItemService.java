@@ -42,7 +42,7 @@ public class DictionaryItemService {
    * @param requestModel
    * @return
    */
-  public PageInfo getEntityPage(RequestModel<DicItemQueryModel> requestModel) {
+  public PageInfo selectEntityPage(RequestModel<DicItemQueryModel> requestModel) {
 
     DicItemQueryModel model = requestModel.getContent();
 

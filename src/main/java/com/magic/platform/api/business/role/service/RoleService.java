@@ -49,7 +49,7 @@ public class RoleService {
   @Autowired
   public UserVOMapper userVOMapper;
 
-  public PageInfo getEntityPage(RequestModel<RoleQueryModel> requestModel) {
+  public PageInfo selectEntityPage(RequestModel<RoleQueryModel> requestModel) {
     RoleQueryModel model = requestModel.getContent();
 
     int pageNum = requestModel.getPage().getPageNum() - 1;

@@ -25,6 +25,6 @@
   </select>
 
   <select id="selectChildrenByParentId" resultType="java.lang.String">
-    select getChildren(#{parentId}, #{containParent});
+    select getChildren(#{parentId}, #{tableName}, #{containParent});
   </select>
 </mapper>

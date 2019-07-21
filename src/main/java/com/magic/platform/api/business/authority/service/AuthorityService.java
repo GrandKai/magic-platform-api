@@ -43,7 +43,7 @@ public class AuthorityService {
     @Autowired
     private AuthorityOperationMapper authorityOperationMapper;
 
-    public PageInfo getEntityPage(RequestModel<AuthorityQueryModel> requestModel) {
+    public PageInfo selectEntityPage(RequestModel<AuthorityQueryModel> requestModel) {
 
         AuthorityQueryModel model = requestModel.getContent();
 

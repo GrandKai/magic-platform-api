@@ -42,7 +42,7 @@ public class DictionaryTypeService {
     @Autowired
     private DictionaryItemMapper dictionaryItemMapper;
 
-    public PageInfo getEntityPage(RequestModel<DicTypeQueryModel> requestModel) {
+    public PageInfo selectEntityPage(RequestModel<DicTypeQueryModel> requestModel) {
 
         DicTypeQueryModel model = requestModel.getContent();
 

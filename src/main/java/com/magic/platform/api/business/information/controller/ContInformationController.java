@@ -1,9 +1,11 @@
 package com.magic.platform.api.business.information.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.magic.platform.api.business.article.model.FileUploadResult;
 import com.magic.platform.api.business.information.mapper.custom.entity.ContInformationVO;
 import com.magic.platform.api.business.information.model.ContInformationQueryModel;
 import com.magic.platform.api.business.information.service.ContInformationService;
+import com.magic.platform.api.business.user.model.UserQueryModel;
 import com.magic.platform.api.util.FileUtils;
 import com.magic.platform.core.anotation.OpsLog;
 import com.magic.platform.core.anotation.OpsLogType;
@@ -41,6 +43,15 @@ public class ContInformationController {
 
   @Autowired
   public ContInformationService contInformationService;
+
+  @PostMapping
+  @ApiOperation(value = "账号分页查询")
+  @OpsLog(value = "账号分页查询", type = OpsLogType.SELECT)
+  public ResponseModel page(@RequestBody RequestModel<ContInformationQueryModel> requestModel) {
+
+    PageInfo pageInfo = contInformationService.selectEntityPage(requestModel);
+    return new ResponseModel<>(pageInfo);
+  }
 
   @PostMapping("add")
   @ApiOperation(value = "新增文章")

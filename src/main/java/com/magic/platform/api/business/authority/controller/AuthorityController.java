@@ -36,7 +36,7 @@ public class AuthorityController {
     @ApiOperation(value = "权限分页查询")
     @OpsLog(value = "权限分页查询", type = OpsLogType.SELECT)
     public ResponseModel page(@RequestBody RequestModel<AuthorityQueryModel> requestModel) {
-        PageInfo pageInfo = authorityService.getEntityPage(requestModel);
+        PageInfo pageInfo = authorityService.selectEntityPage(requestModel);
         return new ResponseModel<>(pageInfo);
     }
 

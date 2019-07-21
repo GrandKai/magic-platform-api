@@ -43,7 +43,7 @@ public class DictionaryItemController {
     @ApiOperation(value = "查询数据项目分页")
     @OpsLog(value = "查询数据项目分页", type = OpsLogType.SELECT)
     public ResponseModel page(@RequestBody RequestModel<DicItemQueryModel> requestModel) {
-        PageInfo pageInfo = dictionaryItemService.getEntityPage(requestModel);
+        PageInfo pageInfo = dictionaryItemService.selectEntityPage(requestModel);
         return new ResponseModel<>(pageInfo);
     }
 

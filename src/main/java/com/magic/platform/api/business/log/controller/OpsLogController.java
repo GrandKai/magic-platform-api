@@ -33,7 +33,7 @@ public class OpsLogController {
   @ApiOperation(value = "查询操作日志分页")
   @OpsLog(value = "查询操作日志分页", type = OpsLogType.SELECT)
   public ResponseModel page(@RequestBody RequestModel<OpsLogQueryModel> requestModel) {
-    PageInfo pageInfo = opsLogService.getEntityPage(requestModel);
+    PageInfo pageInfo = opsLogService.selectEntityPage(requestModel);
     return new ResponseModel<>(pageInfo);
   }
 }

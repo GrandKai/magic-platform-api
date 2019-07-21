@@ -41,7 +41,7 @@ public class DictionaryTypeController {
     @ApiOperation(value = "查询数据类型分页")
     @OpsLog(value = "查询数据类型分页", type = OpsLogType.SELECT)
     public ResponseModel page(@RequestBody RequestModel<DicTypeQueryModel> requestModel) {
-        PageInfo pageInfo = dictionaryTypeService.getEntityPage(requestModel);
+        PageInfo pageInfo = dictionaryTypeService.selectEntityPage(requestModel);
         return new ResponseModel<>(pageInfo);
     }
 

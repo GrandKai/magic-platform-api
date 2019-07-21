@@ -20,5 +20,5 @@ public interface OrganizationVOMapper extends BaseMapper<OrganizationVO> {
      * @param containParent 是否包含父节点本身（1：包含，0：不包含）
      * @return
      */
-    String selectChildrenByParentId(@Param("parentId") String parentId, @Param("containParent") String containParent);
+    String selectChildrenByParentId(@Param("parentId") String parentId, @Param("tableName") String tableName, @Param("containParent") String containParent);
 }

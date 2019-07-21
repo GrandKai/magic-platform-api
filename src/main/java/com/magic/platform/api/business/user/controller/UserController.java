@@ -38,7 +38,7 @@ public class UserController {
   @OpsLog(value = "账号分页查询", type = OpsLogType.SELECT)
   public ResponseModel page(@RequestBody RequestModel<UserQueryModel> requestModel) {
 
-    PageInfo pageInfo = userService.getEntityPage(requestModel);
+    PageInfo pageInfo = userService.selectEntityPage(requestModel);
     return new ResponseModel<>(pageInfo);
   }
 

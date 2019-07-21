@@ -28,7 +28,7 @@ public class OpsLogService {
   @Autowired
   private MongoPageHelper mongoPageHelper;
 
-  public PageInfo getEntityPage(RequestModel<OpsLogQueryModel> requestModel) {
+  public PageInfo selectEntityPage(RequestModel<OpsLogQueryModel> requestModel) {
 
     OpsLogQueryModel model = requestModel.getContent();
 
