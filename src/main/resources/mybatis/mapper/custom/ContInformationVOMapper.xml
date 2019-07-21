@@ -18,7 +18,7 @@
     <result column="release_time" jdbcType="TIMESTAMP" property="releaseTime" />
     <result column="validity_end_time" jdbcType="TIMESTAMP" property="validityEndTime" />
     <result column="publisher" jdbcType="VARCHAR" property="publisher" />
-    <result column="click_amout" jdbcType="INTEGER" property="clickAmout" />
+    <result column="click_amount" jdbcType="INTEGER" property="clickAmount" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="is_deleted" jdbcType="CHAR" property="isDeleted" />
@@ -26,5 +26,15 @@
   </resultMap>
 
   <select id="selectEntityList" parameterType="com.magic.platform.api.business.information.model.ContInformationQueryModel" resultMap="BaseResultMap">
+    select t.* from cont_information t
+    <where>
+      <if test="list != null and list.size() > 0">
+        and t.catalog_id in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+      </if>
+    </where>
+    order by t.update_time desc, t.create_time
   </select>
 </mapper>
