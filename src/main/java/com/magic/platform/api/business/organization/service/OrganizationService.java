@@ -90,11 +90,21 @@ public class OrganizationService {
     }
   }
 
-
-  private List<String> selectChildrenByParentId(String parentId, String tableName, String containParent) {
+  private List<String> selectOrganizationChildren(String parentId, String containParent) {
     // 查询该组织机构下的所有员工信息
     if (!StringUtils.isEmpty(parentId)) {
-      String ids = organizationVOMapper.selectChildrenByParentId(parentId, tableName, "1");
+      String ids = organizationVOMapper.selectOrganizationChildren(parentId, "1");
+      if (!StringUtils.isEmpty(ids)) {
+        return Arrays.asList(ids.split(","));
+      }
+    }
+    return Collections.emptyList();
+  }
+
+  private List<String> selectContCatalogChildren(String parentId, String containParent) {
+    // 查询该组织机构下的所有员工信息
+    if (!StringUtils.isEmpty(parentId)) {
+      String ids = organizationVOMapper.selectContCatalogChildren(parentId, "1");
       if (!StringUtils.isEmpty(ids)) {
         return Arrays.asList(ids.split(","));
       }
@@ -108,7 +118,16 @@ public class OrganizationService {
    * @return
    */
   public List<String> selectOrganizationChildrenContainParent(String parentId) {
-    return selectChildrenByParentId(parentId, "organization", "1");
+    return selectOrganizationChildren(parentId, "1");
+  }
+
+  /**
+   * 查询父元素下的所有子节点（不包含父节点 - 组织机构表
+   * @param parentId
+   * @return
+   */
+  public List<String> selectOrganizationChildrenNotContainParent(String parentId) {
+    return selectOrganizationChildren(parentId, "0");
   }
 
   /**
@@ -117,26 +136,15 @@ public class OrganizationService {
    * @return
    */
   public List<String> selectContentCatalogChildrenContainParent(String parentId) {
-    return selectChildrenByParentId(parentId, "cont_catalog", "1");
+    return selectContCatalogChildren(parentId, "1");
   }
 
   /**
-   * 查询父元素下的所有子节点（不包含父节点
+   * 查询父元素下的所有子节点（不包含父节点 - 栏目表
    * @param parentId
-   * @param tableName
    * @return
    */
-  public List<String> selectOrganizationChildrenNotContainParent(String parentId, String tableName) {
-    return selectChildrenByParentId(parentId, "organization", "0");
-  }
-
-  /**
-   * 查询父元素下的所有子节点（不包含父节点
-   * @param parentId
-   * @param tableName
-   * @return
-   */
-  public List<String> selectContentCatalogChildrenNotContainParent(String parentId, String tableName) {
-    return selectChildrenByParentId(parentId, "cont_catalog", "0");
+  public List<String> selectContentCatalogChildrenNotContainParent(String parentId) {
+    return selectContCatalogChildren(parentId,"0");
   }
 }

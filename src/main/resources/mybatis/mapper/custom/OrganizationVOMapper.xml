@@ -24,7 +24,11 @@
     order by t.sort_number asc, t.update_time desc
   </select>
 
-  <select id="selectChildrenByParentId" resultType="java.lang.String">
-    select getChildren(#{parentId}, #{tableName}, #{containParent});
+  <select id="selectOrganizationChildren" resultType="java.lang.String">
+    select selectOrganizationChildren(#{parentId}, #{containParent});
+  </select>
+
+  <select id="selectContCatalogChildren" resultType="java.lang.String">
+    select selectContCatalogChildren(#{parentId}, #{containParent});
   </select>
 </mapper>

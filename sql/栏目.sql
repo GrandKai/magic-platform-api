@@ -1,7 +1,7 @@
 # 查询根节点下的所有子节点id集合
-drop function if exists getChildren;
+drop function if exists selectContCatalogChildren;
 DELIMITER //
-CREATE FUNCTION `getChildren`(rootId varchar(50), tableName varchar(50), containRoot char(1))
+CREATE FUNCTION `selectContCatalogChildren`(rootId varchar(50), containRoot char(1))
     RETURNS mediumtext
     READS SQL DATA
 
@@ -21,7 +21,7 @@ BEGIN
         SET sTemp = concat(sTemp, sTempChd);
     end if ;
 
-    SELECT group_concat(id) INTO sTempChd FROM tableName where FIND_IN_SET(parent_id, sTempChd) > 0;
+    SELECT group_concat(id) INTO sTempChd FROM cont_catalog where FIND_IN_SET(parent_id, sTempChd) > 0;
     END WHILE;
 
     if '1' != containRoot then
