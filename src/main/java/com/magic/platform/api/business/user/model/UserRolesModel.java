@@ -10,7 +10,7 @@ import lombok.Data;
  * @Modified By:
  */
 @Data
-public class UserRoleModel {
+public class UserRolesModel {
 
   /**
    * 用户id
@@ -20,6 +20,6 @@ public class UserRoleModel {
   /**
    * 用户的角色列表
    */
-  private List<String> roleList;
+  private List<String> roleIds;
 
 }

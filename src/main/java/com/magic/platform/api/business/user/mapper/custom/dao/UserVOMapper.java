@@ -2,11 +2,9 @@ package com.magic.platform.api.business.user.mapper.custom.dao;
 
 import com.magic.platform.api.business.user.mapper.custom.entity.UserVO;
 import com.magic.platform.api.business.user.model.UserQueryModel;
+import com.magic.platform.api.business.user.model.UserRolesModel;
 import com.magic.platform.entity.mapper.build.BaseMapper;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Author: zyn
@@ -16,7 +14,21 @@ import java.util.Map;
  */
 public interface UserVOMapper extends BaseMapper<UserVO> {
 
-  void addUserRole(@Param("userId") String userId, @Param("list") List<String> roleList);
+  int insertUserRolesByBatch(UserRolesModel model);
 
   List<UserVO> selectEntityList(UserQueryModel model);
+
+  /**
+   * TODO: 可以优化，返回信息中不待会角色信息
+   * @param model
+   * @return
+   */
+  List<UserVO> selectRoleUsersRightPageSetByRoleId(UserQueryModel model);
+
+  /**
+   * TODO: 可以优化，返回信息中不待会角色信息
+   * @param model
+   * @return
+   */
+  List<UserVO> selectRoleUsersLeftPageUnset(UserQueryModel model);
 }

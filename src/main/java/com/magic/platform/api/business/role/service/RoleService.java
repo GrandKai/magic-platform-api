@@ -7,6 +7,7 @@ import com.magic.platform.api.business.role.mapper.custom.entity.RoleVO;
 import com.magic.platform.api.business.role.model.RoleAuthorityModel;
 import com.magic.platform.api.business.role.model.RoleModel;
 import com.magic.platform.api.business.role.model.RoleQueryModel;
+import com.magic.platform.api.business.role.model.RoleUsersModel;
 import com.magic.platform.api.business.user.mapper.custom.dao.UserVOMapper;
 import com.magic.platform.core.exception.CustomException;
 import com.magic.platform.core.model.RequestModel;
@@ -205,5 +206,13 @@ public class RoleService {
     if (0 < list.size()) {
       roleAuthorityMapper.insertList(list);
     }
+  }
+
+  public void addRoleUsers(RoleUsersModel model) {
+    roleVOMapper.insertRoleUserByBatch(model);
+  }
+
+  public void deleteRoleUsers(RoleUsersModel model) {
+    roleVOMapper.deleteRoleUserByBatch(model);
   }
 }

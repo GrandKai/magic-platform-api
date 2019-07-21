@@ -7,6 +7,7 @@ import com.magic.platform.api.business.user.dto.UserDto;
 import com.magic.platform.api.business.user.mapper.custom.dao.UserVOMapper;
 import com.magic.platform.api.business.user.mapper.custom.entity.UserVO;
 import com.magic.platform.api.business.user.model.UserQueryModel;
+import com.magic.platform.api.business.user.model.UserRolesModel;
 import com.magic.platform.core.constant.Constant;
 import com.magic.platform.core.exception.CustomException;
 import com.magic.platform.core.exception.ExceptionEnum;
@@ -23,6 +24,7 @@ import com.magic.platform.entity.mapper.build.entity.UserRole;
 import com.magic.platform.util.DigestMessageUtil;
 import com.magic.platform.util.UUIDUtils;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.lang.Collections;
 import java.util.Date;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -240,20 +242,18 @@ public class UserService {
 
   /**
    * 保存用户的角色信息
-   *
-   * @param userId 用户id
-   * @param roleList 角色信息
+   * @param model
    */
-  public void addUserRoles(String userId, List<String> roleList) {
+  public void addUserRoles(UserRolesModel model) {
 
     // 删除用户的全部角色信息
     UserRole userRole = new UserRole();
-    userRole.setUserId(userId);
+    userRole.setUserId(model.getUserId());
     userRoleMapper.delete(userRole);
 
     // 添加全部角色信息
-    if (roleList != null && 0 < roleList.size()) {
-      userVOMapper.addUserRole(userId, roleList);
+    if (!Collections.isEmpty(model.getRoleIds())) {
+      userVOMapper.insertUserRolesByBatch(model);
     }
   }
 
@@ -271,4 +271,63 @@ public class UserService {
     return userRoleMapper.select(userRole);
   }
 
+  /**
+   * 查询已经分配角色的用户
+   * @param requestModel
+   * @return
+   */
+  public PageInfo selectRoleUsersRightPageSetByRoleId(RequestModel<UserQueryModel> requestModel) {
+
+    UserQueryModel model = requestModel.getContent();
+
+    int pageNum = requestModel.getPage().getPageNum() - 1;
+    int pageSize = requestModel.getPage().getPageSize();
+
+    // 查询该组织机构下的所有员工信息
+    if (!StringUtils.isEmpty(model.getOrganizationId())) {
+
+      // 如果不是 -1 查询的是具体某个结点
+      if (!Constant.ZERO.equals(model.getLevel())) {
+        List<String> list = organizationService.selectChildrenContainParent(model.getOrganizationId());
+        model.setList(list);
+      }
+    }
+
+    PageHelper.offsetPage(pageNum * pageSize, pageSize, true);
+
+    List<UserVO> list = userVOMapper.selectRoleUsersRightPageSetByRoleId(model);
+    PageInfo pageInfo = new PageInfo<>(list);
+
+    return pageInfo;
+  }
+
+  /**
+   * 查询未分配角色的用户
+   * @param requestModel
+   * @return
+   */
+  public PageInfo selectRoleUsersLeftPageUnset(RequestModel<UserQueryModel> requestModel) {
+
+    UserQueryModel model = requestModel.getContent();
+
+    int pageNum = requestModel.getPage().getPageNum() - 1;
+    int pageSize = requestModel.getPage().getPageSize();
+
+    // 查询该组织机构下的所有员工信息
+    if (!StringUtils.isEmpty(model.getOrganizationId())) {
+
+      // 如果不是 -1 查询的是具体某个结点
+      if (!Constant.ZERO.equals(model.getLevel())) {
+        List<String> list = organizationService.selectChildrenContainParent(model.getOrganizationId());
+        model.setList(list);
+      }
+    }
+
+    PageHelper.offsetPage(pageNum * pageSize, pageSize, true);
+
+    List<UserVO> list = userVOMapper.selectRoleUsersLeftPageUnset(model);
+    PageInfo pageInfo = new PageInfo<>(list);
+
+    return pageInfo;
+  }
 }

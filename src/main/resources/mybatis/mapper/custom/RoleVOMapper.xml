@@ -16,14 +16,15 @@
     </resultMap>
 
     <select id="selectEntityList" resultMap="BaseResultMap" parameterType="java.util.Map">
-        select t.id,
-        t.name,
-        t.description,
-        t.plat_id,
-        p.name as plat_name,
-        t.create_time,
-        t.update_time,
-        t.sort_number
+        select
+            t.id,
+            t.name,
+            t.description,
+            t.plat_id,
+            p.name as plat_name,
+            t.create_time,
+            t.update_time,
+            t.sort_number
         from role t inner join plat p on t.plat_id = p.id
         where p.is_enabled = '1' and p.is_deleted = '0'
         <if test="name != null and name != ''">
@@ -34,6 +35,31 @@
         </if>
         order by p.sort_number asc, p.update_time desc, t.sort_number asc, t.update_time desc
     </select>
+
+    <insert id="insertRoleUserByBatch" parameterType="com.magic.platform.api.business.role.model.RoleUsersModel">
+
+        insert into user_role
+        (
+            user_id,
+            role_id
+        )
+        values
+        <foreach collection="userIds" item="userId" index="index" open="" close="" separator=",">
+            (
+                #{userId},
+                #{roleId}
+            )
+        </foreach>
+    </insert>
+
+    <delete id="deleteRoleUserByBatch" parameterType="com.magic.platform.api.business.role.model.RoleUsersModel">
+
+        delete t from user_role t where t.role_id = #{roleId} and t.user_id in
+
+        <foreach collection="userIds" item="userId" index="index" open="(" close=")" separator=",">
+            #{userId}
+        </foreach>
+    </delete>
 
 </mapper>
 

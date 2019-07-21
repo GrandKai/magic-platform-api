@@ -20,9 +20,14 @@ public class UserQueryModel {
     private String isEnabled;
 
     /**
-     * 账号主键
+     * 用户id
      */
     private String userId;
+
+    /**
+     * 角色id
+     */
+    private String roleId;
 
     /**
      * 密码
@@ -36,7 +41,7 @@ public class UserQueryModel {
     private String nickName;
 
     /**
-     * 父组织机构id
+     * 父组织机构id（该字段主要为了查询所有组织机构下的id集合）
      */
     private String organizationId;
 

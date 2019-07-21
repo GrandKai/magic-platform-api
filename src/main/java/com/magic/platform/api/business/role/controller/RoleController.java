@@ -5,6 +5,7 @@ import com.magic.platform.api.business.role.mapper.custom.entity.RoleVO;
 import com.magic.platform.api.business.role.model.RoleAuthorityModel;
 import com.magic.platform.api.business.role.model.RoleModel;
 import com.magic.platform.api.business.role.model.RoleQueryModel;
+import com.magic.platform.api.business.role.model.RoleUsersModel;
 import com.magic.platform.api.business.role.service.RoleService;
 import com.magic.platform.core.anotation.OpsLog;
 import com.magic.platform.core.anotation.OpsLogType;
@@ -135,5 +136,34 @@ public class RoleController {
     Objects.requireNonNull(model.getName(), "角色名称不能为空");
     roleService.checkUpdateExist(model);
     return new ResponseModel();
+  }
+
+  @PostMapping(value = "/users/add")
+  @ApiOperation(value = "新增角色新增")
+  @OpsLog(value = "新增角色用户", type = OpsLogType.ADD)
+  public ResponseModel addRoleUser(@RequestBody RequestModel<RoleUsersModel> requestModel) {
+
+    RoleUsersModel model = requestModel.getContent();
+    Objects.requireNonNull(model, "入参不能为空");
+    Objects.requireNonNull(model.getRoleId(), "角色id不能为空");
+    Objects.requireNonNull(model.getUserIds(), "用户id不能为空");
+
+    roleService.addRoleUsers(model);
+    return new ResponseModel("新增角色用户成功！");
+  }
+
+
+  @PostMapping(value = "/users/delete")
+  @ApiOperation(value = "删除角色用户")
+  @OpsLog(value = "删除角色用户", type = OpsLogType.DELETE)
+  public ResponseModel deleteRoleUser(@RequestBody RequestModel<RoleUsersModel> requestModel) {
+
+    RoleUsersModel model = requestModel.getContent();
+    Objects.requireNonNull(model, "入参不能为空");
+    Objects.requireNonNull(model.getRoleId(), "角色id不能为空");
+    Objects.requireNonNull(model.getUserIds(), "用户id不能为空");
+
+    roleService.deleteRoleUsers(model);
+    return new ResponseModel("移除角色用户成功！");
   }
 }

@@ -2,7 +2,7 @@ package com.magic.platform.api.business.user.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.magic.platform.api.business.user.model.UserQueryModel;
-import com.magic.platform.api.business.user.model.UserRoleModel;
+import com.magic.platform.api.business.user.model.UserRolesModel;
 import com.magic.platform.api.business.user.service.UserService;
 import com.magic.platform.core.anotation.OpsLog;
 import com.magic.platform.core.anotation.OpsLogType;
@@ -147,12 +147,12 @@ public class UserController {
   @PostMapping("add/roles")
   @ApiOperation("设置用户角色信息")
   @OpsLog(value = "设置用户角色信息", type = {OpsLogType.ADD, OpsLogType.UPDATE})
-  public ResponseModel addUserRole(@RequestBody RequestModel<UserRoleModel> requestModel) {
+  public ResponseModel addUserRole(@RequestBody RequestModel<UserRolesModel> requestModel) {
 
-    UserRoleModel userRoleModel = requestModel.getContent();
-    Objects.requireNonNull(userRoleModel.getUserId(), "用户id不能为空");
+    UserRolesModel model = requestModel.getContent();
+    Objects.requireNonNull(model.getUserId(), "用户id不能为空");
 
-    userService.addUserRoles(userRoleModel.getUserId(), userRoleModel.getRoleList());
+    userService.addUserRoles(model);
 
     return new ResponseModel("用户角色信息设置成功！");
   }
@@ -170,5 +170,22 @@ public class UserController {
 
     return new ResponseModel<>(list);
 
+  }
+
+
+  @PostMapping(value = "/page/right/set")
+  @ApiOperation(value = "分页查询已分配账号的 staffInfo 列表")
+  public ResponseModel selectRoleUsersRightPageSetByRoleId(@RequestBody RequestModel<UserQueryModel> requestModel) {
+    PageInfo pageInfo = userService.selectRoleUsersRightPageSetByRoleId(requestModel);
+    return new ResponseModel(pageInfo);
+
+  }
+
+
+  @PostMapping(value = "/page/left/unset")
+  @ApiOperation(value = "分页查询未分配账号的 staffInfo 列表")
+  public ResponseModel selectRoleUsersPageLeftUnset(@RequestBody RequestModel<UserQueryModel> requestModel) {
+    PageInfo pageInfo = userService.selectRoleUsersLeftPageUnset(requestModel);
+    return new ResponseModel(pageInfo);
   }
 }
