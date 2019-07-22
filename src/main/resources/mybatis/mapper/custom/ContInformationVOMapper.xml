@@ -7,9 +7,10 @@
     -->
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="catalog_id" jdbcType="VARCHAR" property="catalogId" />
+    <result column="catalog_name" jdbcType="VARCHAR" property="catalogName" />
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="cover_image" jdbcType="VARCHAR" property="coverImage" />
-    <result column="sumary" jdbcType="VARCHAR" property="sumary" />
+    <result column="summary" jdbcType="VARCHAR" property="summary" />
     <result column="author" jdbcType="VARCHAR" property="author" />
     <result column="source" jdbcType="VARCHAR" property="source" />
     <result column="source_address" jdbcType="VARCHAR" property="sourceAddress" />
@@ -26,15 +27,29 @@
   </resultMap>
 
   <select id="selectEntityList" parameterType="com.magic.platform.api.business.information.model.ContInformationQueryModel" resultMap="BaseResultMap">
-    select t.* from cont_information t
+    select c.name as catalog_name, t.* from cont_information t
+        left join cont_catalog c on t.catalog_id = c.id
     <where>
+      <if test="name != null and name !=''">
+        and locate(#{name}, t.title) > 0
+      </if>
+
+      <if test="startTime != null and startTime != null">
+        and t.release_time >= #{startTime}
+      </if>
+
+      <if test="endTime != null and endTime != null">
+        and t.release_time &lt;= #{endTime}
+      </if>
+
       <if test="list != null and list.size() > 0">
         and t.catalog_id in
         <foreach collection="list" item="item" open="(" close=")" separator=",">
             #{item}
         </foreach>
       </if>
+
     </where>
-    order by t.update_time desc, t.create_time
+    order by t.update_time desc, t.release_time desc , t.create_time desc
   </select>
 </mapper>

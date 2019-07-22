@@ -5,7 +5,6 @@ import com.magic.platform.api.business.article.model.FileUploadResult;
 import com.magic.platform.api.business.information.mapper.custom.entity.ContInformationVO;
 import com.magic.platform.api.business.information.model.ContInformationQueryModel;
 import com.magic.platform.api.business.information.service.ContInformationService;
-import com.magic.platform.api.business.user.model.UserQueryModel;
 import com.magic.platform.api.util.FileUtils;
 import com.magic.platform.core.anotation.OpsLog;
 import com.magic.platform.core.anotation.OpsLogType;
@@ -78,11 +77,11 @@ public class ContInformationController {
   @PostMapping("delete")
   @ApiOperation(value = "删除文章")
   @OpsLog(value = "删除文章", type = OpsLogType.DELETE)
-  public ResponseModel delete(@RequestBody RequestModel<String> requestModel) {
-    String id = requestModel.getContent();
-    Objects.requireNonNull(id, "文章id不能为空");
+  public ResponseModel delete(@RequestBody RequestModel<List<String>> requestModel) {
+    List<String> ids = requestModel.getContent();
+    Objects.requireNonNull(ids, "文章id不能为空");
 
-    contInformationService.deleteEntity(id);
+    contInformationService.deleteEntity(ids);
     return new ResponseModel("删除文章成功！");
   }
 

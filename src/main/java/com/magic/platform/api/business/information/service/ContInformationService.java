@@ -17,6 +17,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
+import tk.mybatis.mapper.entity.Example.Criteria;
 
 /**
  * @Author: Administrator
@@ -64,13 +66,17 @@ public class ContInformationService {
     return contInformationMapper.selectByPrimaryKey(param.getId());
   }
 
-  public void deleteEntity(String id) {
+  public void deleteEntity(List<String> ids) {
 
-    ContInformation param = contInformationMapper.selectByPrimaryKey(id);
+    Example example = new Example(ContInformation.class);
+    Criteria criteria = example.createCriteria();
+    criteria.andIn("id", ids);
+
+    ContInformation param = new ContInformation();
     param.setIsDeleted("1");
     param.setUpdateTime(new Date());
+    contInformationMapper.updateByExampleSelective(param, example);
 
-    contInformationMapper.updateByPrimaryKeySelective(param);
   }
 
   public List<ContInformationVO> selectEntityList(ContInformationQueryModel model) {
