@@ -110,7 +110,7 @@ public class CatalogController {
 
     }
 
-    return new ResponseModel<>("上传文件成功!", result);
+    return new ResponseModel<>("上传文件成功！", result);
   }
 
 }

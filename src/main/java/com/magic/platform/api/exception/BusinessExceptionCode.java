@@ -9,6 +9,6 @@ import javafx.util.Pair;
  * @Modified By:
  */
 public interface BusinessExceptionCode {
-  Pair<Integer, String> SYSTEM_ALREADY_EXIST = new Pair<>(4001, "系统已存在!");
+  Pair<Integer, String> SYSTEM_ALREADY_EXIST = new Pair<>(4001, "系统已存在！");
 
 }

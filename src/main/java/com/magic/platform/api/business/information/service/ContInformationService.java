@@ -107,4 +107,8 @@ public class ContInformationService {
 
     return pageInfo;
   }
+
+  public ContInformation getEntity(String id) {
+    return contInformationMapper.selectByPrimaryKey(id);
+  }
 }

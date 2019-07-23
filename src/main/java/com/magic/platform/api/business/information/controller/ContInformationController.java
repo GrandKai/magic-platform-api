@@ -52,13 +52,24 @@ public class ContInformationController {
     return new ResponseModel<>(pageInfo);
   }
 
+  @PostMapping("get")
+  @ApiOperation(value = "查询文章成功")
+  @OpsLog(value = "查询文章成功", type = OpsLogType.SELECT)
+  public ResponseModel get(@RequestBody RequestModel<String> requestModel) {
+    String id = requestModel.getContent();
+
+    Objects.requireNonNull(id, "文章id不能为空！");
+    ContInformation entity = contInformationService.getEntity(id);
+    return new ResponseModel<>("查询文章成功！", entity);
+  }
+
   @PostMapping("add")
   @ApiOperation(value = "新增文章")
   @OpsLog(value = "新增文章", type = OpsLogType.ADD)
   public ResponseModel add(@RequestBody RequestModel<ContInformation> requestModel) {
     ContInformation param = requestModel.getContent();
 
-    Objects.requireNonNull(param, "请求对象不能为空");
+    Objects.requireNonNull(param, "请求对象不能为空！");
     ContInformation entity = contInformationService.addEntity(param);
     return new ResponseModel<>("新增文章成功！", entity);
   }
@@ -69,7 +80,7 @@ public class ContInformationController {
   public ResponseModel update(@RequestBody RequestModel<ContInformation> requestModel) {
     ContInformation param = requestModel.getContent();
 
-    Objects.requireNonNull(param.getId(), "文章id不能为空");
+    Objects.requireNonNull(param.getId(), "文章id不能为空！");
     ContInformation entity = contInformationService.updateEntity(param);
     return new ResponseModel<>("修改文章成功！", entity);
   }
@@ -79,7 +90,7 @@ public class ContInformationController {
   @OpsLog(value = "删除文章", type = OpsLogType.DELETE)
   public ResponseModel delete(@RequestBody RequestModel<List<String>> requestModel) {
     List<String> ids = requestModel.getContent();
-    Objects.requireNonNull(ids, "文章id不能为空");
+    Objects.requireNonNull(ids, "文章id不能为空！");
 
     contInformationService.deleteEntity(ids);
     return new ResponseModel("删除文章成功！");
@@ -91,7 +102,7 @@ public class ContInformationController {
   public ResponseModel list(@RequestBody RequestModel<ContInformationQueryModel> requestModel) {
     ContInformationQueryModel model = requestModel.getContent();
     List<ContInformationVO> list = contInformationService.selectEntityList(model);
-    return new ResponseModel<>("查询成功", list);
+    return new ResponseModel<>("查询成功！", list);
   }
 
 
@@ -120,7 +131,7 @@ public class ContInformationController {
 
     }
 
-    return new ResponseModel<>("上传文件成功!", result);
+    return new ResponseModel<>("上传文件成功！", result);
   }
 
 
