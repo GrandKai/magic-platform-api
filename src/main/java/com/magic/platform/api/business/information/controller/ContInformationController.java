@@ -44,8 +44,8 @@ public class ContInformationController {
   public ContInformationService contInformationService;
 
   @PostMapping
-  @ApiOperation(value = "账号分页查询")
-  @OpsLog(value = "账号分页查询", type = OpsLogType.SELECT)
+  @ApiOperation(value = "文章分页查询")
+  @OpsLog(value = "文章分页查询", type = OpsLogType.SELECT)
   public ResponseModel page(@RequestBody RequestModel<ContInformationQueryModel> requestModel) {
 
     PageInfo pageInfo = contInformationService.selectEntityPage(requestModel);
@@ -53,8 +53,8 @@ public class ContInformationController {
   }
 
   @PostMapping("get")
-  @ApiOperation(value = "查询文章成功")
-  @OpsLog(value = "查询文章成功", type = OpsLogType.SELECT)
+  @ApiOperation(value = "查询文章")
+  @OpsLog(value = "查询文章", type = OpsLogType.SELECT)
   public ResponseModel get(@RequestBody RequestModel<String> requestModel) {
     String id = requestModel.getContent();
 
