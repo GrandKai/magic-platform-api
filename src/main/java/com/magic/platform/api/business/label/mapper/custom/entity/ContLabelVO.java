@@ -12,4 +12,5 @@ import lombok.Data;
 @Data
 public class ContLabelVO extends ContLabel {
 
+  private String groupName;
 }

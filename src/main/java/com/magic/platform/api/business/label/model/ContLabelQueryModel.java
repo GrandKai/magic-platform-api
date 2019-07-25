@@ -11,8 +11,12 @@ import lombok.Data;
 @Data
 public class ContLabelQueryModel {
   private String id;
-
   private String name;
   private String isShow;
 
+
+  private String groupId;
+  private String groupName;
+  private String labelGroupIsShow;
+  private String labelIsShow;
 }

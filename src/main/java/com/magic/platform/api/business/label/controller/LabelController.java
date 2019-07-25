@@ -109,4 +109,28 @@ public class LabelController {
     labelService.updateShowStatus(model);
     return responseModel;
   }
+
+  @PostMapping(value = "check/status")
+  @ApiOperation(value = "查询标签是否可以删除")
+  @OpsLog(value = "查询标签是否可以删除", type = OpsLogType.SELECT)
+  public ResponseModel checkEntityStatus(@RequestBody RequestModel<String> requestModel) {
+
+    String id = requestModel.getContent();
+    Objects.requireNonNull(id, "标签id不能为空");
+
+    labelService.checkEntityStatus(id);
+    return new ResponseModel("删除成功！");
+  }
+
+  @PostMapping("check/exist")
+  @ApiOperation(value = "检测【标签名称】是否存在")
+  @OpsLog(value = "检测【标签名称】是否存在", type = OpsLogType.CHECK)
+  public ResponseModel checkExist(@RequestBody RequestModel<ContLabelQueryModel> requestModel) {
+    ContLabelQueryModel model = requestModel.getContent();
+    Objects.requireNonNull(model, "入参不能为空");
+    Objects.requireNonNull(model.getName(), "标签组名称不能为空");
+
+    labelService.checkExist(model);
+    return new ResponseModel();
+  }
 }

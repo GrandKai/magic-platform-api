@@ -5,12 +5,14 @@ import com.github.pagehelper.PageInfo;
 import com.magic.platform.api.business.label.mapper.custom.dao.ContLabelVOMapper;
 import com.magic.platform.api.business.label.mapper.custom.entity.ContLabelVO;
 import com.magic.platform.api.business.label.model.ContLabelQueryModel;
+import com.magic.platform.core.exception.CustomException;
 import com.magic.platform.core.model.RequestModel;
 import com.magic.platform.entity.mapper.build.dao.ContLabelMapper;
 import com.magic.platform.entity.mapper.build.entity.ContLabel;
 import com.magic.platform.util.UUIDUtils;
 import java.util.Date;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -103,5 +105,35 @@ public class LabelService {
     param.setId(model.getId());
 
     contLabelMapper.updateByPrimaryKeySelective(param);
+  }
+
+
+  public void checkExist(ContLabelQueryModel model) {
+
+    Example example = new Example(ContLabel.class);
+    Criteria criteria = example.createCriteria();
+
+    criteria.andEqualTo("name", model.getName());
+    criteria.andEqualTo("groupId", model.getGroupId());
+
+    if (StringUtils.isNotEmpty(model.getId())) {
+      criteria.andNotEqualTo("id", model.getId());
+    }
+
+    int count = contLabelMapper.selectCountByExample(example);
+    if (0 < count) {
+      throw new CustomException("标签名称在【" + model.getGroupName() + "】标签组下已经存在，请修改后再提交");
+    }
+  }
+
+  public void checkEntityStatus(String id) {
+
+//    ContLabel param = new ContLabel();
+//    param.setGroupId(id);
+//
+//    int cout = contLabelMapper.selectCount(param);
+//    if (0 < cout) {
+//      throw new CustomException("标签组下含有标签,无法删除");
+//    }
   }
 }

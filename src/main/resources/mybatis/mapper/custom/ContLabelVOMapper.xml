@@ -5,13 +5,36 @@
     <!--
       WARNING - @mbg.generated
     -->
-    <id column="id" jdbcType="VARCHAR" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="group_id" jdbcType="VARCHAR" property="groupId" />
-    <result column="sort_number" jdbcType="SMALLINT" property="sortNumber" />
-    <result column="is_deleted" jdbcType="CHAR" property="isDeleted" />
-    <result column="is_show" jdbcType="CHAR" property="isShow" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <id column="id" jdbcType="VARCHAR" property="id"/>
+    <result column="name" jdbcType="VARCHAR" property="name"/>
+    <result column="group_id" jdbcType="VARCHAR" property="groupId"/>
+    <result column="group_name" jdbcType="VARCHAR" property="groupName"/>
+    <result column="sort_number" jdbcType="SMALLINT" property="sortNumber"/>
+    <result column="is_deleted" jdbcType="CHAR" property="isDeleted"/>
+    <result column="is_show" jdbcType="CHAR" property="isShow"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
   </resultMap>
+
+  <select id="selectEntityList" resultMap="BaseResultMap" parameterType="com.magic.platform.api.business.label.model.ContLabelQueryModel">
+
+    select cg.name as group_name, t.* from cont_label t inner join cont_label_group cg on t.group_id = cg.id
+    where cg.is_deleted = 0 and t.is_deleted = 0
+
+    <if test="name != null and name != ''">
+      and t.name like concat('%', #{name}, '%')
+
+    </if>
+    <if test="groupId != null and groupId != ''">
+      and t.group_id = #{groupId}
+    </if>
+
+    <if test="labelGroupIsShow != null and labelGroupIsShow != ''">
+      and cg.is_show = #{typeIsShow}
+    </if>
+    <if test="labelIsShow != null and labelIsShow != ''">
+      and t.is_show = #{itemIsShow}
+    </if>
+
+  </select>
 </mapper>
