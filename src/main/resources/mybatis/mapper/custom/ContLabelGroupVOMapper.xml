@@ -10,7 +10,20 @@
     <result column="sort_number" jdbcType="SMALLINT" property="sortNumber" />
     <result column="description" jdbcType="VARCHAR" property="description" />
     <result column="is_deleted" jdbcType="CHAR" property="isDeleted" />
+    <result column="is_show" jdbcType="CHAR" property="isShow" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
+
+  <select id="selectEntityList" resultMap="BaseResultMap" parameterType="com.magic.platform.api.business.label.model.ContLabelGroupQueryModel">
+    SELECT t.* FROM cont_label_group t WHERE t.is_deleted = 0
+    <if test="name != null and name != ''">
+      and t.name like concat('%', #{name}, '%')
+    </if>
+    <if test="isShow != null and isShow != ''">
+      and t.is_show = #{isShow}
+    </if>
+    ORDER BY t.sort_number asc, t.update_time desc
+
+  </select>
 </mapper>

@@ -95,4 +95,13 @@ public class LabelService {
   public ContLabel getEntity(String id) {
     return contLabelMapper.selectByPrimaryKey(id);
   }
+
+  public void updateShowStatus(ContLabelQueryModel model) {
+
+    ContLabel param = new ContLabel();
+    param.setIsShow(model.getIsShow());
+    param.setId(model.getId());
+
+    contLabelMapper.updateByPrimaryKeySelective(param);
+  }
 }

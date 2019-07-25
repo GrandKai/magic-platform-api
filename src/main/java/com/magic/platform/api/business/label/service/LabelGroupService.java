@@ -5,12 +5,16 @@ import com.github.pagehelper.PageInfo;
 import com.magic.platform.api.business.label.mapper.custom.dao.ContLabelGroupVOMapper;
 import com.magic.platform.api.business.label.mapper.custom.entity.ContLabelGroupVO;
 import com.magic.platform.api.business.label.model.ContLabelGroupQueryModel;
+import com.magic.platform.core.exception.CustomException;
 import com.magic.platform.core.model.RequestModel;
 import com.magic.platform.entity.mapper.build.dao.ContLabelGroupMapper;
+import com.magic.platform.entity.mapper.build.dao.ContLabelMapper;
+import com.magic.platform.entity.mapper.build.entity.ContLabel;
 import com.magic.platform.entity.mapper.build.entity.ContLabelGroup;
 import com.magic.platform.util.UUIDUtils;
 import java.util.Date;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +32,8 @@ public class LabelGroupService {
 
   @Autowired
   private ContLabelGroupMapper contLabelGroupMapper;
+  @Autowired
+  private ContLabelMapper contLabelMapper;
 
   @Autowired
   private ContLabelGroupVOMapper contLabelGroupVOMapper;
@@ -43,6 +49,7 @@ public class LabelGroupService {
     entity.setCreateTime(new Date());
     entity.setUpdateTime(new Date());
     entity.setIsDeleted("0");
+    entity.setIsShow("1");
 
     contLabelGroupMapper.insert(entity);
 
@@ -96,4 +103,39 @@ public class LabelGroupService {
     return contLabelGroupMapper.selectByPrimaryKey(id);
   }
 
+  public void updateShowStatus(ContLabelGroupQueryModel model) {
+
+    ContLabelGroup param = new ContLabelGroup();
+    param.setIsShow(model.getIsShow());
+    param.setId(model.getId());
+
+    contLabelGroupMapper.updateByPrimaryKeySelective(param);
+  }
+
+  public void checkEntityStatus(String id) {
+
+    ContLabel param = new ContLabel();
+    param.setGroupId(id);
+
+    int cout = contLabelMapper.selectCount(param);
+    if (0 < cout) {
+      throw new CustomException("标签组下含有标签,无法删除");
+    }
+  }
+
+  public void checkExist(ContLabelGroupQueryModel model) {
+
+    Example example = new Example(ContLabelGroup.class);
+    Criteria criteria = example.createCriteria();
+
+    criteria.andEqualTo("name", model.getName());
+    if (StringUtils.isNotEmpty(model.getId())) {
+      criteria.andNotEqualTo("id", model.getId());
+    }
+
+    int count = contLabelGroupMapper.selectCountByExample(example);
+    if (0 < count) {
+      throw new CustomException("标签组名称已经存在，请修改后再提交");
+    }
+  }
 }

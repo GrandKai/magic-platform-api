@@ -13,6 +13,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @Api(tags = "标签组相关操作")
 @RestController
-@RequestMapping("labelGroup")
+@RequestMapping("label/group")
 public class LabelGroupController {
 
   @Autowired
@@ -87,4 +88,49 @@ public class LabelGroupController {
     return new ResponseModel("删除标签组成功！");
   }
 
+
+  @PostMapping(value = "set")
+  @ApiOperation(value = "显示/隐藏数据类型")
+  @OpsLog(value = "显示/隐藏数据类型", type = OpsLogType.UPDATE)
+  public ResponseModel updateShowStatus(@RequestBody RequestModel<ContLabelGroupQueryModel> requestModel) {
+    ContLabelGroupQueryModel model = requestModel.getContent();
+
+    Objects.requireNonNull(model, "入参不能为空");
+    Objects.requireNonNull(model.getId(), "标签组id不能为空");
+    Objects.requireNonNull(model.getIsShow(), "标签组状态不能为空");
+
+    ResponseModel responseModel = new ResponseModel();
+    if (StringUtils.equals("1", model.getIsShow())) {
+      responseModel.setMessage("显示成功！");
+    } else {
+      responseModel.setMessage("隐藏成功！");
+    }
+
+    labelGroupService.updateShowStatus(model);
+    return responseModel;
+  }
+
+  @PostMapping(value = "check/status")
+  @ApiOperation(value = "查询标签组是否可以删除")
+  @OpsLog(value = "查询标签组是否可以删除", type = OpsLogType.SELECT)
+  public ResponseModel checkEntityStatus(@RequestBody RequestModel<String> requestModel) {
+
+    String id = requestModel.getContent();
+    Objects.requireNonNull(id, "标签组id不能为空");
+
+    labelGroupService.checkEntityStatus(id);
+    return new ResponseModel("删除成功！");
+  }
+
+  @PostMapping("check/exist")
+  @ApiOperation(value = "检测【标签组名称】是否存在")
+  @OpsLog(value = "检测【标签组名称】是否存在", type = OpsLogType.CHECK)
+  public ResponseModel checkExist(@RequestBody RequestModel<ContLabelGroupQueryModel> requestModel) {
+    ContLabelGroupQueryModel model = requestModel.getContent();
+    Objects.requireNonNull(model, "入参不能为空");
+    Objects.requireNonNull(model.getName(), "标签组名称不能为空");
+
+    labelGroupService.checkExist(model);
+    return new ResponseModel();
+  }
 }

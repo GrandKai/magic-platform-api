@@ -13,6 +13,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -85,5 +86,27 @@ public class LabelController {
 
     labelService.deleteEntity(ids);
     return new ResponseModel("删除标签成功！");
+  }
+
+
+  @PostMapping(value = "set")
+  @ApiOperation(value = "显示/隐藏数据类型")
+  @OpsLog(value = "显示/隐藏数据类型", type = OpsLogType.UPDATE)
+  public ResponseModel updateShowStatus(@RequestBody RequestModel<ContLabelQueryModel> requestModel) {
+    ContLabelQueryModel model = requestModel.getContent();
+
+    Objects.requireNonNull(model, "入参不能为空");
+    Objects.requireNonNull(model.getId(), "标签id不能为空");
+    Objects.requireNonNull(model.getIsShow(), "标签状态不能为空");
+
+    ResponseModel responseModel = new ResponseModel();
+    if (StringUtils.equals("1", model.getIsShow())) {
+      responseModel.setMessage("显示成功！");
+    } else {
+      responseModel.setMessage("隐藏成功！");
+    }
+
+    labelService.updateShowStatus(model);
+    return responseModel;
   }
 }

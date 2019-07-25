@@ -10,6 +10,7 @@
     <result column="group_id" jdbcType="VARCHAR" property="groupId" />
     <result column="sort_number" jdbcType="SMALLINT" property="sortNumber" />
     <result column="is_deleted" jdbcType="CHAR" property="isDeleted" />
+    <result column="is_show" jdbcType="CHAR" property="isShow" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
