@@ -119,7 +119,7 @@ public class LabelGroupService {
 
     int cout = contLabelMapper.selectCount(param);
     if (0 < cout) {
-      throw new CustomException("标签组下含有标签,无法删除");
+      throw new CustomException("标签组下含有标签");
     }
   }
 
@@ -135,7 +135,7 @@ public class LabelGroupService {
 
     int count = contLabelGroupMapper.selectCountByExample(example);
     if (0 < count) {
-      throw new CustomException("标签组名称已经存在，请修改后再提交");
+      throw new CustomException("标签组名称已存在，请修改后提交");
     }
   }
 }

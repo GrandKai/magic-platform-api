@@ -122,7 +122,7 @@ public class LabelService {
 
     int count = contLabelMapper.selectCountByExample(example);
     if (0 < count) {
-      throw new CustomException("标签名称在【" + model.getGroupName() + "】标签组下已经存在，请修改后再提交");
+      throw new CustomException("标签【" + model.getName() + "】在【" + model.getGroupName() + "】标签组中已存在，请修改后提交");
     }
   }
 

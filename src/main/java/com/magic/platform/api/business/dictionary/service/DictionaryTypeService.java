@@ -3,27 +3,22 @@ package com.magic.platform.api.business.dictionary.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.magic.platform.api.business.dictionary.mapper.custom.dao.DictionaryTypeVOMapper;
-import com.magic.platform.api.business.dictionary.mapper.custom.entity.DictionaryTypeVO;
 import com.magic.platform.api.business.dictionary.model.DicTypeQueryModel;
-import com.magic.platform.api.exception.BusinessExceptionEnum;
 import com.magic.platform.core.exception.CustomException;
 import com.magic.platform.core.model.RequestModel;
 import com.magic.platform.entity.mapper.build.dao.DictionaryItemMapper;
 import com.magic.platform.entity.mapper.build.dao.DictionaryTypeMapper;
 import com.magic.platform.entity.mapper.build.entity.DictionaryItem;
 import com.magic.platform.entity.mapper.build.entity.DictionaryType;
-import com.magic.platform.entity.mapper.build.entity.Plat;
 import com.magic.platform.util.UUIDUtils;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import tk.mybatis.mapper.entity.Example;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @Author: zyn
@@ -137,7 +132,7 @@ public class DictionaryTypeService {
     }
 
     /**
-     * 检测数据类型编码是否已经存在
+     * 检测数据类型编码是否已存在
      * @param code
      */
     public void checkExist(String code) {
@@ -147,7 +142,7 @@ public class DictionaryTypeService {
 
         int count = dictionaryTypeMapper.selectCount(param);
         if (0 < count) {
-            throw new CustomException("数据类型编码已经存在，请修改后再提交");
+            throw new CustomException("数据类型编码已存在，请修改后提交");
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.magic.platform.api.business.label.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.magic.platform.api.business.label.mapper.custom.entity.ContLabelGroupVO;
 import com.magic.platform.api.business.label.model.ContLabelGroupQueryModel;
 import com.magic.platform.api.business.label.service.LabelGroupService;
 import com.magic.platform.core.anotation.OpsLog;
@@ -42,6 +43,18 @@ public class LabelGroupController {
 
     PageInfo pageInfo = labelGroupService.selectEntityPage(requestModel);
     return new ResponseModel<>(pageInfo);
+  }
+
+  @PostMapping("list")
+  @ApiOperation(value = "查询数据类型列表")
+  @OpsLog(value = "查询数据类型列表", type = OpsLogType.SELECT)
+  public ResponseModel list(@RequestBody RequestModel<ContLabelGroupQueryModel> requestModel) {
+
+    ContLabelGroupQueryModel param = requestModel.getContent();
+    Objects.requireNonNull(param, "请求对象不能为空");
+
+    List<ContLabelGroupVO> list = labelGroupService.selectEntityList(param);
+    return new ResponseModel<>(list);
   }
 
   @PostMapping("get")

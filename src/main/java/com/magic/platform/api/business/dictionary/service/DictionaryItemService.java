@@ -9,15 +9,12 @@ import com.magic.platform.api.business.dictionary.model.DicTypeQueryModel;
 import com.magic.platform.core.exception.CustomException;
 import com.magic.platform.core.model.RequestModel;
 import com.magic.platform.entity.mapper.build.dao.DictionaryItemMapper;
-
+import com.magic.platform.entity.mapper.build.entity.DictionaryItem;
+import com.magic.platform.util.UUIDUtils;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.magic.platform.entity.mapper.build.entity.DictionaryItem;
-import com.magic.platform.entity.mapper.build.entity.DictionaryType;
-import com.magic.platform.util.UUIDUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -129,7 +126,7 @@ public class DictionaryItemService {
 
         int count = dictionaryItemMapper.selectCount(param);
         if (0 < count) {
-            throw new CustomException("数据项目编码已经存在，请修改后再提交");
+            throw new CustomException("数据项目编码已存在，请修改后提交");
         }
     }
 }
