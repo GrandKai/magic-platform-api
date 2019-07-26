@@ -1,6 +1,7 @@
 package com.magic.platform.api.business.label.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.magic.platform.api.business.label.model.ContLabelModel;
 import com.magic.platform.api.business.label.model.ContLabelQueryModel;
 import com.magic.platform.api.business.label.service.LabelService;
 import com.magic.platform.core.anotation.OpsLog;
@@ -58,12 +59,12 @@ public class LabelController {
   @PostMapping("add")
   @ApiOperation(value = "新增标签")
   @OpsLog(value = "新增标签", type = OpsLogType.ADD)
-  public ResponseModel add(@RequestBody RequestModel<ContLabel> requestModel) {
-    ContLabel param = requestModel.getContent();
+  public ResponseModel add(@RequestBody RequestModel<ContLabelModel> requestModel) {
+    ContLabelModel param = requestModel.getContent();
 
     Objects.requireNonNull(param, "请求对象不能为空！");
-    ContLabel entity = labelService.addEntity(param);
-    return new ResponseModel<>("新增标签成功！", entity);
+    labelService.addEntity(param);
+    return new ResponseModel<>("新增标签成功！");
   }
 
   @PostMapping("update")

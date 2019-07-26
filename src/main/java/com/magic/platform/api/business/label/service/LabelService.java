@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.magic.platform.api.business.label.mapper.custom.dao.ContLabelVOMapper;
 import com.magic.platform.api.business.label.mapper.custom.entity.ContLabelVO;
+import com.magic.platform.api.business.label.model.ContLabelModel;
 import com.magic.platform.api.business.label.model.ContLabelQueryModel;
 import com.magic.platform.core.exception.CustomException;
 import com.magic.platform.core.model.RequestModel;
@@ -34,21 +35,32 @@ public class LabelService {
   @Autowired
   private ContLabelVOMapper contLabelVOMapper;
 
-  public ContLabel addEntity(ContLabel param) {
-    ContLabel entity = new ContLabel();
+  public void addEntity(ContLabelModel param) {
+//    List<ContLabel> list = new ArrayList<>();
 
-    BeanUtils.copyProperties(param, entity);
+    if (param.getNames() != null) {
+      for (int i = 0; i < param.getNames().size(); i++) {
+        ContLabel entity = new ContLabel();
+        String id = UUIDUtils.uuid();
 
-    String id = UUIDUtils.uuid();
+        entity.setId(id);
+        entity.setName(param.getNames().get(i));
+        entity.setGroupId(param.getGroupId());
 
-    entity.setId(id);
-    entity.setCreateTime(new Date());
-    entity.setUpdateTime(new Date());
-    entity.setIsDeleted("0");
+        entity.setCreateTime(new Date());
+        entity.setUpdateTime(new Date());
+        entity.setIsDeleted("0");
 
-    contLabelMapper.insert(entity);
+        entity.setIsShow("1");
+        entity.setSortNumber(param.getSortNumber());
 
-    return contLabelMapper.selectByPrimaryKey(id);
+//        list.add(entity);
+        contLabelMapper.insert(entity);
+      }
+
+//      FIXME： 批量插入提示数据库 id 字段未设置值
+//      contLabelMapper.insertList(list);
+    }
   }
 
   public ContLabel updateEntity(ContLabel param) {
