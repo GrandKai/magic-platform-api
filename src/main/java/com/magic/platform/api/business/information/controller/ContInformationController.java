@@ -3,6 +3,7 @@ package com.magic.platform.api.business.information.controller;
 import com.github.pagehelper.PageInfo;
 import com.magic.platform.api.business.article.model.FileUploadResult;
 import com.magic.platform.api.business.information.mapper.custom.entity.ContInformationVO;
+import com.magic.platform.api.business.information.model.ContInformationModel;
 import com.magic.platform.api.business.information.model.ContInformationQueryModel;
 import com.magic.platform.api.business.information.service.ContInformationService;
 import com.magic.platform.api.util.FileUtils;
@@ -52,6 +53,24 @@ public class ContInformationController {
     return new ResponseModel<>(pageInfo);
   }
 
+  @PostMapping("page/simple")
+  @ApiOperation(value = "文章分页查询")
+  @OpsLog(value = "文章分页查询", type = OpsLogType.SELECT)
+  public ResponseModel pageSimple(@RequestBody RequestModel<ContInformationQueryModel> requestModel) {
+
+    PageInfo pageInfo = contInformationService.selectEntityPageSimple(requestModel);
+    return new ResponseModel<>(pageInfo);
+  }
+
+  @PostMapping("list")
+  @ApiOperation(value = "获取文章列表")
+  @OpsLog(value = "获取文章列表", type = OpsLogType.SELECT)
+  public ResponseModel list(@RequestBody RequestModel<ContInformationQueryModel> requestModel) {
+    ContInformationQueryModel model = requestModel.getContent();
+    List<ContInformationVO> list = contInformationService.selectEntityList(model);
+    return new ResponseModel<>("查询成功！", list);
+  }
+
   @PostMapping("get")
   @ApiOperation(value = "查询文章")
   @OpsLog(value = "查询文章", type = OpsLogType.SELECT)
@@ -66,8 +85,8 @@ public class ContInformationController {
   @PostMapping("add")
   @ApiOperation(value = "新增文章")
   @OpsLog(value = "新增文章", type = OpsLogType.ADD)
-  public ResponseModel add(@RequestBody RequestModel<ContInformation> requestModel) {
-    ContInformation param = requestModel.getContent();
+  public ResponseModel add(@RequestBody RequestModel<ContInformationModel> requestModel) {
+    ContInformationModel param = requestModel.getContent();
 
     Objects.requireNonNull(param, "请求对象不能为空！");
     ContInformation entity = contInformationService.addEntity(param);
@@ -94,15 +113,6 @@ public class ContInformationController {
 
     contInformationService.deleteEntity(ids);
     return new ResponseModel("删除文章成功！");
-  }
-
-  @PostMapping("list")
-  @ApiOperation(value = "获取文章列表")
-  @OpsLog(value = "获取文章列表", type = OpsLogType.SELECT)
-  public ResponseModel list(@RequestBody RequestModel<ContInformationQueryModel> requestModel) {
-    ContInformationQueryModel model = requestModel.getContent();
-    List<ContInformationVO> list = contInformationService.selectEntityList(model);
-    return new ResponseModel<>("查询成功！", list);
   }
 
 

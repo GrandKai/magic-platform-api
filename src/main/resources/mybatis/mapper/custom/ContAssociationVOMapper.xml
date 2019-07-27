@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.magic.platform.api.business.information.mapper.custom.dao.ContAssociationVOMapper">
+  <resultMap id="BaseResultMap" type="com.magic.platform.api.business.information.mapper.custom.entity.ContAssociationVO">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="source_id" jdbcType="VARCHAR" property="sourceId" />
+    <result column="association_id" jdbcType="VARCHAR" property="associationId" />
+    <result column="source_type" jdbcType="VARCHAR" property="sourceType" />
+    <result column="sort_number" jdbcType="SMALLINT" property="sortNumber" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <select id="selectContInformationSimpleVOList" parameterType="com.magic.platform.api.business.information.model.ContAssociationQueryModel"
+    resultMap="com.magic.platform.api.business.information.mapper.custom.dao.ContInformationVOMapper.SimpleBaseResultMap">
+    select
+       t.id,
+       t.catalog_id,
+       c.name as catalog_name,
+
+       t.title,
+       t.author,
+       t.top_level,
+
+       t.top_end_time,
+       t.release_time,
+       t.publisher,
+
+       t.click_amount,
+       t.create_time,
+       t.update_time
+
+    from cont_information t
+           inner join cont_catalog c on t.catalog_id = c.id
+           inner join cont_association ca on t.id = ca.association_id
+    where ca.source_id = #{sourceId} and ca.source_type = #{sourceType}
+    order by ca.sort_number, ca.update_time desc;
+
+  </select>
+</mapper>

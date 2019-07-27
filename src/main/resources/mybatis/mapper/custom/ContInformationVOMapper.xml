@@ -26,9 +26,23 @@
     <result column="content" jdbcType="LONGVARCHAR" property="content" />
   </resultMap>
 
-  <select id="selectEntityList" parameterType="com.magic.platform.api.business.information.model.ContInformationQueryModel" resultMap="BaseResultMap">
+  <resultMap id="SimpleBaseResultMap" type="com.magic.platform.api.business.information.mapper.custom.entity.ContInformationSimpleVO">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="catalog_id" jdbcType="VARCHAR" property="catalogId" />
+    <result column="catalog_name" jdbcType="VARCHAR" property="catalogName" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="author" jdbcType="VARCHAR" property="author" />
+    <result column="top_end_time" jdbcType="TIMESTAMP" property="topEndTime" />
+    <result column="release_time" jdbcType="TIMESTAMP" property="releaseTime" />
+    <result column="publisher" jdbcType="VARCHAR" property="publisher" />
+    <result column="click_amount" jdbcType="INTEGER" property="clickAmount" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <select id="selectEntityList" parameterType="com.magic.platform.api.business.information.model.ContInformationQueryModel" resultMap="SimpleBaseResultMap">
     select c.name as catalog_name, t.* from cont_information t
-        left join cont_catalog c on t.catalog_id = c.id
+        inner join cont_catalog c on t.catalog_id = c.id
     <where>
       <if test="name != null and name !=''">
         and locate(#{name}, t.title) > 0
@@ -50,6 +64,52 @@
       </if>
 
     </where>
-    order by t.update_time desc, t.release_time desc , t.create_time desc
+    order by c.sort_number, t.update_time desc, t.release_time desc , t.create_time desc
+  </select>
+
+
+
+  <select id="selectSimpleEntityList" parameterType="com.magic.platform.api.business.information.model.ContInformationQueryModel"
+    resultMap="SimpleBaseResultMap">
+    select
+       t.id,
+       t.catalog_id,
+       c.name as catalog_name,
+
+       t.title,
+       t.author,
+       t.top_level,
+
+       t.top_end_time,
+       t.release_time,
+       t.publisher,
+
+       t.click_amount,
+       t.create_time,
+       t.update_time
+    from cont_information t
+    inner join cont_catalog c on t.catalog_id = c.id
+    <where>
+      <if test="name != null and name !=''">
+        and locate(#{name}, t.title) > 0
+      </if>
+
+      <if test="startTime != null and startTime != null">
+        and t.release_time >= #{startTime}
+      </if>
+
+      <if test="endTime != null and endTime != null">
+        and t.release_time &lt;= #{endTime}
+      </if>
+
+      <if test="list != null and list.size() > 0">
+        and t.catalog_id in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+          #{item}
+        </foreach>
+      </if>
+
+    </where>
+    order by c.sort_number, t.update_time desc, t.release_time desc , t.create_time desc
   </select>
 </mapper>
