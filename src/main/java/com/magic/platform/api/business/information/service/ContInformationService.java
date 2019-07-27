@@ -2,9 +2,11 @@ package com.magic.platform.api.business.information.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.magic.platform.api.business.information.mapper.custom.dao.ContAssociationVOMapper;
 import com.magic.platform.api.business.information.mapper.custom.dao.ContInformationVOMapper;
 import com.magic.platform.api.business.information.mapper.custom.entity.ContInformationSimpleVO;
 import com.magic.platform.api.business.information.mapper.custom.entity.ContInformationVO;
+import com.magic.platform.api.business.information.model.ContAssociationQueryModel;
 import com.magic.platform.api.business.information.model.ContInformationModel;
 import com.magic.platform.api.business.information.model.ContInformationQueryModel;
 import com.magic.platform.api.business.organization.service.OrganizationService;
@@ -35,11 +37,13 @@ public class ContInformationService {
 
   @Autowired
   private ContInformationMapper contInformationMapper;
-
   @Autowired
   private ContInformationVOMapper contInformationVOMapper;
+
   @Autowired
   private ContAssociationMapper contAssociationMapper;
+  @Autowired
+  private ContAssociationVOMapper contAssociationVOMapper;
 
   @Autowired
   private OrganizationService organizationService;
@@ -48,73 +52,75 @@ public class ContInformationService {
     ContInformation entity = new ContInformation();
 
     BeanUtils.copyProperties(param, entity);
+    String informationId = UUIDUtils.uuid();
 
-    String infomationId = UUIDUtils.uuid();
-
-    entity.setId(infomationId);
+    entity.setId(informationId);
     entity.setCreateTime(new Date());
     entity.setUpdateTime(new Date());
     entity.setIsDeleted("0");
 
     contInformationMapper.insert(entity);
 
+    this.insertListAssociation(informationId, param.getInformation());
+    this.insertListAssociation(informationId, param.getLabels());
 
-    List<ContAssociation> information = param.getInformation();
-    if (information != null) {
-
-      ContAssociation associationInformation = null;
-      for (ContAssociation info : information) {
-        associationInformation = new ContAssociation();
-
-        associationInformation.setId(UUIDUtils.uuid());
-        associationInformation.setCreateTime(new Date());
-        associationInformation.setUpdateTime(new Date());
-
-        associationInformation.setAssociationId(info.getAssociationId());
-        associationInformation.setSortNumber(info.getSortNumber());
-        associationInformation.setSourceId(infomationId);
-        // TODO：取数据字典的值
-        associationInformation.setSourceType("INFORMATION");
-
-        // 添加关联资讯
-        contAssociationMapper.insert(associationInformation);
-
-      }
-    }
-
-
-    List<ContAssociation> labels = param.getLabels();
-    if (labels != null) {
-      ContAssociation associationLabel = null;
-      for (ContAssociation label : labels) {
-        associationLabel = new ContAssociation();
-
-        associationLabel.setId(UUIDUtils.uuid());
-        associationLabel.setCreateTime(new Date());
-        associationLabel.setUpdateTime(new Date());
-
-        associationLabel.setAssociationId(label.getAssociationId());
-        associationLabel.setSortNumber(label.getSortNumber());
-        associationLabel.setSourceId(infomationId);
-        // TODO：取数据字典的值
-        associationLabel.setSourceType("LABEL");
-
-        // 添加关联标签
-        contAssociationMapper.insert(associationLabel);
-
-      }
-    }
-
-    return contInformationMapper.selectByPrimaryKey(infomationId);
+    return contInformationMapper.selectByPrimaryKey(informationId);
   }
 
-  public ContInformation updateEntity(ContInformation param) {
+  /**
+   * 批量插入关联信息
+   * @param informationId 资讯id
+   * @param associations 关联内容列表
+   */
+  private void insertListAssociation(String informationId, List<ContAssociation> associations) {
+    if (associations != null) {
+
+      ContAssociation associationEntity = null;
+      for (ContAssociation association : associations) {
+        associationEntity = new ContAssociation();
+
+        associationEntity.setId(UUIDUtils.uuid());
+        associationEntity.setCreateTime(new Date());
+        associationEntity.setUpdateTime(new Date());
+
+        associationEntity.setAssociationId(association.getAssociationId());
+        associationEntity.setSortNumber(association.getSortNumber());
+        associationEntity.setSourceId(informationId);
+        // TODO：取数据字典的值
+        associationEntity.setSourceType(association.getSourceType());
+
+        // 添加关联资讯
+        contAssociationMapper.insert(associationEntity);
+
+      }
+    }
+  }
+
+  public ContInformation updateEntity(ContInformationModel param) {
 
     ContInformation entity = new ContInformation();
     BeanUtils.copyProperties(param, entity);
     entity.setUpdateTime(new Date());
 
     contInformationMapper.updateByPrimaryKeySelective(entity);
+
+    String informationId = param.getId();
+
+    // 删除旧资讯信息-添加新资讯信息
+    ContAssociationQueryModel associationInformation = new ContAssociationQueryModel();
+    associationInformation.setSourceType("INFORMATION");
+    associationInformation.setSourceId(informationId);
+
+    contAssociationVOMapper.deleteContAssociations(associationInformation);
+    this.insertListAssociation(informationId, param.getInformation());
+
+    // 删除旧标签信息-添加新标签信息
+    ContAssociationQueryModel associationLabel = new ContAssociationQueryModel();
+    associationLabel.setSourceType("LABEL");
+    associationLabel.setSourceId(informationId);
+
+    contAssociationVOMapper.deleteContAssociations(associationLabel);
+    this.insertListAssociation(informationId, param.getLabels());
 
     return contInformationMapper.selectByPrimaryKey(param.getId());
   }

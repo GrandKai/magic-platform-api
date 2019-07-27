@@ -39,4 +39,9 @@
     order by ca.sort_number, ca.update_time desc;
 
   </select>
+
+  <delete id="deleteContAssociations" parameterType="com.magic.platform.api.business.information.model.ContAssociationQueryModel">
+    delete t from cont_association t where t.source_id = #{sourceId} and t.source_type = #{sourceType}
+  </delete>
+
 </mapper>

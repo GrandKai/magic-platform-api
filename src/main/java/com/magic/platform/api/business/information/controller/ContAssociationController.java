@@ -35,8 +35,8 @@ public class ContAssociationController {
 
 
   @PostMapping("list/{sourceType}")
-  @ApiOperation(value = "获取关联文章列表")
-  @OpsLog(value = "获取关联文章列表", type = OpsLogType.SELECT)
+  @ApiOperation(value = "获取关联资讯列表")
+  @OpsLog(value = "获取关联资讯列表", type = OpsLogType.SELECT)
   public ResponseModel list(@RequestBody RequestModel<ContAssociationQueryModel> requestModel,
       @PathVariable(name = "sourceType", required = false) String sourceType) {
     ContAssociationQueryModel model = requestModel.getContent();

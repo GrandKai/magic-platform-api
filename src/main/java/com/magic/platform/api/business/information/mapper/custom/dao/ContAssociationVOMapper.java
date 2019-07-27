@@ -15,4 +15,6 @@ import java.util.List;
 public interface ContAssociationVOMapper extends BaseMapper<ContAssociationVO> {
 
   List<ContInformationSimpleVO> selectContInformationSimpleVOList(ContAssociationQueryModel model);
+
+  int deleteContAssociations(ContAssociationQueryModel model);
 }

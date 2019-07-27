@@ -36,7 +36,7 @@ import org.springframework.web.multipart.MultipartFile;
  * @Modified By:
  */
 @Slf4j
-@Api(tags = "文章相关操作")
+@Api(tags = "资讯相关操作")
 @RestController
 @RequestMapping("information")
 public class ContInformationController {
@@ -45,8 +45,8 @@ public class ContInformationController {
   public ContInformationService contInformationService;
 
   @PostMapping
-  @ApiOperation(value = "文章分页查询")
-  @OpsLog(value = "文章分页查询", type = OpsLogType.SELECT)
+  @ApiOperation(value = "资讯分页查询")
+  @OpsLog(value = "资讯分页查询", type = OpsLogType.SELECT)
   public ResponseModel page(@RequestBody RequestModel<ContInformationQueryModel> requestModel) {
 
     PageInfo pageInfo = contInformationService.selectEntityPage(requestModel);
@@ -54,8 +54,8 @@ public class ContInformationController {
   }
 
   @PostMapping("page/simple")
-  @ApiOperation(value = "文章分页查询")
-  @OpsLog(value = "文章分页查询", type = OpsLogType.SELECT)
+  @ApiOperation(value = "资讯分页查询")
+  @OpsLog(value = "资讯分页查询", type = OpsLogType.SELECT)
   public ResponseModel pageSimple(@RequestBody RequestModel<ContInformationQueryModel> requestModel) {
 
     PageInfo pageInfo = contInformationService.selectEntityPageSimple(requestModel);
@@ -63,8 +63,8 @@ public class ContInformationController {
   }
 
   @PostMapping("list")
-  @ApiOperation(value = "获取文章列表")
-  @OpsLog(value = "获取文章列表", type = OpsLogType.SELECT)
+  @ApiOperation(value = "获取资讯列表")
+  @OpsLog(value = "获取资讯列表", type = OpsLogType.SELECT)
   public ResponseModel list(@RequestBody RequestModel<ContInformationQueryModel> requestModel) {
     ContInformationQueryModel model = requestModel.getContent();
     List<ContInformationVO> list = contInformationService.selectEntityList(model);
@@ -72,47 +72,47 @@ public class ContInformationController {
   }
 
   @PostMapping("get")
-  @ApiOperation(value = "查询文章")
-  @OpsLog(value = "查询文章", type = OpsLogType.SELECT)
+  @ApiOperation(value = "查询资讯")
+  @OpsLog(value = "查询资讯", type = OpsLogType.SELECT)
   public ResponseModel get(@RequestBody RequestModel<String> requestModel) {
     String id = requestModel.getContent();
 
-    Objects.requireNonNull(id, "文章id不能为空！");
+    Objects.requireNonNull(id, "资讯id不能为空！");
     ContInformation entity = contInformationService.getEntity(id);
-    return new ResponseModel<>("查询文章成功！", entity);
+    return new ResponseModel<>("查询资讯成功！", entity);
   }
 
   @PostMapping("add")
-  @ApiOperation(value = "新增文章")
-  @OpsLog(value = "新增文章", type = OpsLogType.ADD)
+  @ApiOperation(value = "新增资讯")
+  @OpsLog(value = "新增资讯", type = OpsLogType.ADD)
   public ResponseModel add(@RequestBody RequestModel<ContInformationModel> requestModel) {
     ContInformationModel param = requestModel.getContent();
 
     Objects.requireNonNull(param, "请求对象不能为空！");
     ContInformation entity = contInformationService.addEntity(param);
-    return new ResponseModel<>("新增文章成功！", entity);
+    return new ResponseModel<>("新增资讯成功！", entity);
   }
 
   @PostMapping("update")
-  @ApiOperation(value = "修改文章")
-  @OpsLog(value = "修改文章", type = OpsLogType.UPDATE)
-  public ResponseModel update(@RequestBody RequestModel<ContInformation> requestModel) {
-    ContInformation param = requestModel.getContent();
+  @ApiOperation(value = "修改资讯")
+  @OpsLog(value = "修改资讯", type = OpsLogType.UPDATE)
+  public ResponseModel update(@RequestBody RequestModel<ContInformationModel> requestModel) {
+    ContInformationModel param = requestModel.getContent();
 
-    Objects.requireNonNull(param.getId(), "文章id不能为空！");
+    Objects.requireNonNull(param.getId(), "资讯id不能为空！");
     ContInformation entity = contInformationService.updateEntity(param);
-    return new ResponseModel<>("修改文章成功！", entity);
+    return new ResponseModel<>("修改资讯成功！", entity);
   }
 
   @PostMapping("delete")
-  @ApiOperation(value = "删除文章")
-  @OpsLog(value = "删除文章", type = OpsLogType.DELETE)
+  @ApiOperation(value = "删除资讯")
+  @OpsLog(value = "删除资讯", type = OpsLogType.DELETE)
   public ResponseModel delete(@RequestBody RequestModel<List<String>> requestModel) {
     List<String> ids = requestModel.getContent();
-    Objects.requireNonNull(ids, "文章id不能为空！");
+    Objects.requireNonNull(ids, "资讯id不能为空！");
 
     contInformationService.deleteEntity(ids);
-    return new ResponseModel("删除文章成功！");
+    return new ResponseModel("删除资讯成功！");
   }
 
 
