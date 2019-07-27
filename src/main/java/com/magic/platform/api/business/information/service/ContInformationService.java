@@ -76,7 +76,9 @@ public class ContInformationService {
     if (associations != null) {
 
       ContAssociation associationEntity = null;
-      for (ContAssociation association : associations) {
+      for (int i = 0; i < associations.size(); i++) {
+        ContAssociation association = associations.get(i);
+
         associationEntity = new ContAssociation();
 
         associationEntity.setId(UUIDUtils.uuid());
@@ -84,7 +86,9 @@ public class ContInformationService {
         associationEntity.setUpdateTime(new Date());
 
         associationEntity.setAssociationId(association.getAssociationId());
-        associationEntity.setSortNumber(association.getSortNumber());
+
+
+        associationEntity.setSortNumber((short) (i + 1));
         associationEntity.setSourceId(informationId);
         // TODO：取数据字典的值
         associationEntity.setSourceType(association.getSourceType());
