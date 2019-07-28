@@ -1,6 +1,5 @@
 package com.magic.platform.api.business.information.controller;
 
-import com.magic.platform.api.business.information.mapper.custom.entity.ContInformationSimpleVO;
 import com.magic.platform.api.business.information.model.ContAssociationQueryModel;
 import com.magic.platform.api.business.information.service.ContAssociationService;
 import com.magic.platform.core.anotation.OpsLog;
@@ -9,7 +8,6 @@ import com.magic.platform.core.model.RequestModel;
 import com.magic.platform.core.model.ResponseModel;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,7 +40,6 @@ public class ContAssociationController {
     ContAssociationQueryModel model = requestModel.getContent();
     model.setSourceType(sourceType);
 
-    List<ContInformationSimpleVO> list = contAssociationService.selectContInformationSimpleVOList(model);
-    return new ResponseModel<>("查询成功！", list);
+    return contAssociationService.selectAssociationList(sourceType, model);
   }
 }

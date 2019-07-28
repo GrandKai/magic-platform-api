@@ -13,7 +13,7 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
-  <select id="selectContInformationSimpleVOList" parameterType="com.magic.platform.api.business.information.model.ContAssociationQueryModel"
+  <select id="selectAssociationInformationSimpleVOList" parameterType="com.magic.platform.api.business.information.model.ContAssociationQueryModel"
     resultMap="com.magic.platform.api.business.information.mapper.custom.dao.ContInformationVOMapper.SimpleBaseResultMap">
     select
        t.id,
@@ -44,4 +44,23 @@
     delete t from cont_association t where t.source_id = #{sourceId} and t.source_type = #{sourceType}
   </delete>
 
+  <select id="selectAssociationLabelList" parameterType="com.magic.platform.api.business.information.model.ContAssociationQueryModel"
+    resultMap="com.magic.platform.api.business.label.mapper.custom.dao.ContLabelVOMapper.BaseResultMap">
+    select t.id,
+           t.name,
+           t.group_id,
+           c.name as group_name,
+           t.sort_number,
+           t.is_deleted,
+           t.is_show,
+           t.create_time,
+           t.update_time
+    from cont_label t
+           inner join cont_label_group c on t.group_id = c.id
+           inner join cont_association ca on t.id = ca.association_id
+    where ca.source_id = #{sourceId} and ca.source_type = #{sourceType}
+      and t.is_show = '1' and t.is_deleted = '0'
+    order by ca.sort_number, ca.update_time desc;
+
+  </select>
 </mapper>

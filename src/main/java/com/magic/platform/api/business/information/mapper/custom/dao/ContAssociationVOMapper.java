@@ -3,6 +3,7 @@ package com.magic.platform.api.business.information.mapper.custom.dao;
 import com.magic.platform.api.business.information.mapper.custom.entity.ContAssociationVO;
 import com.magic.platform.api.business.information.mapper.custom.entity.ContInformationSimpleVO;
 import com.magic.platform.api.business.information.model.ContAssociationQueryModel;
+import com.magic.platform.api.business.label.mapper.custom.entity.ContLabelVO;
 import com.magic.platform.entity.mapper.build.BaseMapper;
 import java.util.List;
 
@@ -14,7 +15,9 @@ import java.util.List;
  */
 public interface ContAssociationVOMapper extends BaseMapper<ContAssociationVO> {
 
-  List<ContInformationSimpleVO> selectContInformationSimpleVOList(ContAssociationQueryModel model);
+  List<ContInformationSimpleVO> selectAssociationInformationSimpleVOList(ContAssociationQueryModel model);
 
   int deleteContAssociations(ContAssociationQueryModel model);
+
+  List<ContLabelVO> selectAssociationLabelList(ContAssociationQueryModel model);
 }
