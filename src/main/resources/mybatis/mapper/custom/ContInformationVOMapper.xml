@@ -64,7 +64,7 @@
       </if>
 
     </where>
-    order by c.sort_number, t.update_time desc, t.release_time desc , t.create_time desc
+    order by c.id, c.sort_number, t.update_time desc, t.release_time desc , t.create_time desc
   </select>
 
 
@@ -110,6 +110,6 @@
       </if>
 
     </where>
-    order by c.sort_number, t.update_time desc, t.release_time desc , t.create_time desc
+    order by c.id, c.sort_number, t.update_time desc, t.release_time desc , t.create_time desc
   </select>
 </mapper>

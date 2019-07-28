@@ -35,6 +35,6 @@
     <if test="labelIsShow != null and labelIsShow != ''">
       and t.is_show = #{itemIsShow}
     </if>
-
+    order by cg.id, cg.sort_number, cg.update_time, t.sort_number, t.update_time
   </select>
 </mapper>
