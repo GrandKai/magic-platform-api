@@ -23,4 +23,12 @@
     select t.* from cont_catalog t where t.is_deleted = '0' order by t.sort_number asc, t.update_time desc
   </select>
 
+  <select id="selectCatalogList" resultType="com.magic.platform.api.front.catalog.dto.CatalogDto">
+    select t.id, t.name, t.parent_id, p.name as parent_name, t.image
+    from cont_catalog t left join cont_catalog p on t.parent_id = p.id
+    where t.is_deleted = 0
+      and t.is_show = 1
+      and t.parent_id is not null
+    order by t.sort_number
+  </select>
 </mapper>

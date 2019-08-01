@@ -112,4 +112,41 @@
     </where>
     order by c.id, c.sort_number, t.update_time desc, t.release_time desc , t.create_time desc
   </select>
+
+
+  <select id="selectInformationList" parameterType="com.magic.platform.api.business.information.model.ContInformationQueryModel"
+    resultType="com.magic.platform.api.front.information.dto.InformationDto">
+    select
+           t.id,
+           t.title,
+           t.release_time,
+
+           t.publisher,
+           t.click_amount,
+           t.cover_image
+    from cont_information t where t.is_deleted = 0
+    inner join cont_catalog c on t.catalog_id = c.id
+    <where>
+      <if test="name != null and name !=''">
+        and locate(#{name}, t.title) > 0
+      </if>
+
+      <if test="startTime != null and startTime != null">
+        and t.release_time >= #{startTime}
+      </if>
+
+      <if test="endTime != null and endTime != null">
+        and t.release_time &lt;= #{endTime}
+      </if>
+
+      <if test="list != null and list.size() > 0">
+        and t.catalog_id in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+          #{item}
+        </foreach>
+      </if>
+
+    </where>
+    order by t.top_level desc, t.release_time desc , t.update_time desc, t.create_time desc
+  </select>
 </mapper>

@@ -37,7 +37,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Api(tags = "栏目相关操作")
 @RestController
 @RequestMapping("catalog")
-public class CatalogController {
+public class ContCatalogController {
 
   @Autowired
   public ContCatalogService contCatalogService;

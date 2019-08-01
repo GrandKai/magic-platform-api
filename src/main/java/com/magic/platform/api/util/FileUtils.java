@@ -41,7 +41,7 @@ public class FileUtils {
     FileUploadResult result = new FileUploadResult();
     try {
       String fileName = FileUtils.transferTo(file);
-      String fileLocation = "http://localhost:8088/images/" + fileName;
+      String fileLocation = "http://172.27.4.71:9088/images/" + fileName;
 
       result.setUploaded(1);
       result.setFileName(fileName);
