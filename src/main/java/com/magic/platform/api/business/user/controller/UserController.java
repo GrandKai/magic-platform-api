@@ -4,17 +4,27 @@ import com.github.pagehelper.PageInfo;
 import com.magic.platform.api.business.user.model.UserQueryModel;
 import com.magic.platform.api.business.user.model.UserRolesModel;
 import com.magic.platform.api.business.user.service.UserService;
+import com.magic.platform.api.util.ExcelUtil;
 import com.magic.platform.core.anotation.OpsLog;
 import com.magic.platform.core.anotation.OpsLogType;
+import com.magic.platform.core.constant.Constant;
+import com.magic.platform.core.exception.CustomException;
 import com.magic.platform.core.model.RequestModel;
 import com.magic.platform.core.model.ResponseModel;
 import com.magic.platform.core.util.Objects;
 import com.magic.platform.entity.mapper.build.entity.UserRole;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.util.List;
+import java.util.Map;
+import javax.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author: GrandKai
  * @create: 2018-05-06 7:56 PM
  */
+@Slf4j
 @Api(tags = "用户相关信息")
 @RestController
 @RequestMapping("user")
@@ -187,5 +198,47 @@ public class UserController {
   public ResponseModel selectRoleUsersPageLeftUnset(@RequestBody RequestModel<UserQueryModel> requestModel) {
     PageInfo pageInfo = userService.selectRoleUsersLeftPageUnset(requestModel);
     return new ResponseModel(pageInfo);
+  }
+  @PostMapping("list/{poolCode}")
+  @ApiOperation(value = "")
+  public void list(@PathVariable(value = "poolCode") String poolCode,
+      @RequestBody RequestModel<UserQueryModel> requestModel, HttpServletResponse response) {
+
+
+    List<Map> list = this.userService.selectEntityListMap(requestModel);
+
+    try {
+      // 题头
+      List<String[]> headNameList = this.userService.getExcelHeader(poolCode);
+
+      String sheetName = this.userService.getExcelSheetName(poolCode);
+      // 构造下拉数据
+      List<Map<String, Object>> dropDownList = null;
+
+      // 生成导入模板
+      HSSFWorkbook wb = ExcelUtil.exportCustomExcel(sheetName, headNameList, list, dropDownList);
+
+      // 设置导出格式为Excel
+      response.setContentType("application/vnd.ms-excel");
+      // 设置文件名并解决中文乱码
+
+      String fileName = URLEncoder.encode(sheetName, "UTF-8");
+      response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".xls");
+      response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
+
+      response.setHeader("Pragma", "No-cache");
+      response.setHeader("Cache-Control", "No-cache");
+      response.setDateHeader("Expires", 0);
+
+      // 声明输出流
+      OutputStream ouputStream = response.getOutputStream();
+      // 输出文件
+      wb.write(ouputStream);
+      ouputStream.flush();
+      ouputStream.close();
+    } catch (Exception e) {
+      log.error("导出数据异常:", e);
+      throw new CustomException(Constant.EXCEPTION_CODE, "导出数据异常");
+    }
   }
 }

@@ -25,8 +25,10 @@ import com.magic.platform.util.DigestMessageUtil;
 import com.magic.platform.util.UUIDUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.lang.Collections;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -97,7 +99,6 @@ public class UserService {
 
   /**
    * 修改用户信息
-   * @param model
    */
   public void updateUser(UserQueryModel model) {
     User user = new User();
@@ -127,7 +128,6 @@ public class UserService {
 
   /**
    * 检测【修改用户账户】是否存在
-   * @param model
    */
   public void checkUpdateExist(UserQueryModel model) {
 
@@ -172,9 +172,6 @@ public class UserService {
 
   /**
    * 重置密码
-   *
-   * @param model
-   * @throws Exception
    */
   public void resetUserPassword(UserQueryModel model) {
 
@@ -242,7 +239,6 @@ public class UserService {
 
   /**
    * 保存用户的角色信息
-   * @param model
    */
   public void addUserRoles(UserRolesModel model) {
 
@@ -273,8 +269,6 @@ public class UserService {
 
   /**
    * 查询已经分配角色的用户
-   * @param requestModel
-   * @return
    */
   public PageInfo selectRoleUsersRightPageSetByRoleId(RequestModel<UserQueryModel> requestModel) {
 
@@ -303,8 +297,6 @@ public class UserService {
 
   /**
    * 查询未分配角色的用户
-   * @param requestModel
-   * @return
    */
   public PageInfo selectRoleUsersLeftPageUnset(RequestModel<UserQueryModel> requestModel) {
 
@@ -329,5 +321,33 @@ public class UserService {
     PageInfo pageInfo = new PageInfo<>(list);
 
     return pageInfo;
+  }
+
+  public List<Map> selectEntityListMap(RequestModel<UserQueryModel> requestModel) {
+    return null;
+  }
+
+  public List<String[]> getExcelHeader(String poolCode) {
+
+    List<String[]> headNameList = new ArrayList<String[]>();
+    headNameList.add(new String[]{"name", "客户姓名"});
+    headNameList.add(new String[]{"buyTime", "成交时间"});
+
+    headNameList.add(new String[]{"productName", "购买产品"});
+    headNameList.add(new String[]{"followStatus", "客户状态"});
+
+    headNameList.add(new String[]{"contentLatest", "最新进展"});
+    headNameList.add(new String[]{"contentModifiedTime", "最新修改时间"});
+    headNameList.add(new String[]{"staffName", "负责人"});
+
+    headNameList.add(new String[]{"giftDescription", "赠品分类"});
+//    headNameList.add(new String[]{"tgGiftRemark", "投顾赠品信息"});
+
+    return headNameList;
+  }
+
+  public String getExcelSheetName(String poolCode) {
+
+    return "";
   }
 }
