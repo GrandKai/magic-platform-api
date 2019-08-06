@@ -3,6 +3,7 @@ package com.magic.platform.api.business.information.mapper.custom.dao;
 import com.magic.platform.api.business.information.mapper.custom.entity.ContInformationSimpleVO;
 import com.magic.platform.api.business.information.mapper.custom.entity.ContInformationVO;
 import com.magic.platform.api.business.information.model.ContInformationQueryModel;
+import com.magic.platform.api.front.information.dto.InformationDetailDto;
 import com.magic.platform.api.front.information.dto.InformationDto;
 import com.magic.platform.entity.mapper.build.BaseMapper;
 import java.util.List;
@@ -24,6 +25,18 @@ public interface ContInformationVOMapper extends BaseMapper<ContInformationVO> {
    */
   List<ContInformationSimpleVO> selectSimpleEntityList(ContInformationQueryModel model);
 
-
+  /**
+   * 手机端-查询资讯列表
+   * @param model
+   * @return
+   */
   List<InformationDto> selectInformationList(ContInformationQueryModel model);
+
+  /**
+   * 手机端-查询资讯详情
+   * @param id
+   * @return
+   */
+  InformationDetailDto selectInformationById(String id);
+
 }

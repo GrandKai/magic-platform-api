@@ -231,11 +231,11 @@ public class UserController {
       response.setDateHeader("Expires", 0);
 
       // 声明输出流
-      OutputStream ouputStream = response.getOutputStream();
+      OutputStream outputStream = response.getOutputStream();
       // 输出文件
-      wb.write(ouputStream);
-      ouputStream.flush();
-      ouputStream.close();
+      wb.write(outputStream);
+      outputStream.flush();
+      outputStream.close();
     } catch (Exception e) {
       log.error("导出数据异常:", e);
       throw new CustomException(Constant.EXCEPTION_CODE, "导出数据异常");
