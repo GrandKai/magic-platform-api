@@ -2,7 +2,6 @@ package com.magic.platform.api.front.information.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.util.Date;
 import lombok.Data;
 
 /**
@@ -21,7 +20,7 @@ public class InformationDetailDto {
   private String content;
 
   @ApiModelProperty(value = "发布时间")
-  private Date releaseTime;
+  private String releaseTime;
   @ApiModelProperty(value = "发布者")
   private String publisher;
   @ApiModelProperty(value = "点击数量")

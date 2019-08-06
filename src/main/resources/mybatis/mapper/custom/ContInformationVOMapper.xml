@@ -150,7 +150,7 @@
            t.title,
            t.content,
            t.publisher,
-           t.release_time,
+           date_format(t.release_time, '%Y-%m-%d %T') as release_time,
            t.click_amount,
            t.validity_end_time
     from cont_information t where t.id = #{id}
