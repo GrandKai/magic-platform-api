@@ -1,6 +1,5 @@
-import io.swagger.annotations.ApiOperation;
 import java.io.IOException;
-import java.util.Set;
+import org.springframework.util.AntPathMatcher;
 
 /**
  * @Author: Administrator
@@ -11,12 +10,24 @@ import java.util.Set;
 public class T {
 
   public static void main(String[] args) throws IOException, ClassNotFoundException {
-    LoadPackageClasses loadPackageClasses = new LoadPackageClasses(new String[]{"com.magic"},
-        ApiOperation.class);
+//    LoadPackageClasses loadPackageClasses = new LoadPackageClasses(new String[]{"com.magic"},
+//        ApiOperation.class);
+//
+//    Set<Class<?>> classSet = loadPackageClasses.getClassSet();
+//
+//    System.out.println(classSet);
 
-    Set<Class<?>> classSet = loadPackageClasses.getClassSet();
+//    ServletContext servletContext = new SpringBootMockServletContext("/auth/refresh/token");
+//    HttpServletRequest request = new MockHttpServletRequest(servletContext,"POST", "/auth/refresh/token");
+//
+//    AntPathRequestMatcher matcher = new AntPathRequestMatcher("/auth/**");
+//    boolean flag = matcher.matches(request);
 
-    System.out.println(classSet);
+
+    AntPathMatcher antPathMatcher = new AntPathMatcher();
+    boolean flag = antPathMatcher.match("/auth/refresh/token", "/auth/refresh/token/");
+
+    System.out.println(flag);
 
   }
 }

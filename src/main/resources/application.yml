@@ -6,6 +6,7 @@ spring:
     active: dev
 framework:
   security:
+    # 是否开启 spring security
     switch: false
     white-list: /a, /b
   config:
