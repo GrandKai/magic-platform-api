@@ -1,4 +1,4 @@
-package com.magic.platform.api.websocket;
+package com.magic.platform.api.websocket.config;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -22,11 +22,11 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-@ServerEndpoint("websocket/{userName}")
+@ServerEndpoint("/ws/{userName}")
 public class WebSocketServer {
 
   //新：使用map对象，便于根据userId来获取对应的WebSocket
-  private static ConcurrentHashMap<String,WebSocketServer> webSockets = new ConcurrentHashMap<>();
+  public static ConcurrentHashMap<String,WebSocketServer> webSockets = new ConcurrentHashMap<>();
 
 
   // 与某个客户端的连接会话，需要通过它来给客户端发送数据
@@ -67,9 +67,13 @@ public class WebSocketServer {
    */
   @OnMessage
   public void onMessage(String message, Session session) {
-    log.info("收到来自窗口" + userName + "的信息:" + message);
+    log.info("收到来自窗口【{}】的信息:{}", this.userName, message);
 
-
+    try {
+      this.sendMessage(message);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   /**

@@ -10,6 +10,8 @@ framework:
     switch: false
     white-list: /a, /b, /websocket/*
   config:
+    redis:
+      enable: true
     dubbo:
       enable: true
     mongo:
