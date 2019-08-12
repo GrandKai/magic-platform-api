@@ -8,7 +8,7 @@ framework:
   security:
     # 是否开启 spring security
     switch: false
-    white-list: /a, /b
+    white-list: /a, /b, /websocket/*
   config:
     dubbo:
       enable: true

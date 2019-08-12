@@ -133,6 +133,11 @@
     <!-- Spring Boot AOP Starter -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-websocket</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-aop</artifactId>
     </dependency>
 
@@ -221,12 +226,6 @@
     <dependency>
       <groupId>com.magic</groupId>
       <artifactId>magic-platform-dubbo</artifactId>
-      <version>${project.parent.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.magic</groupId>
-      <artifactId>magic-platform-support</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
 
