@@ -33,7 +33,7 @@ public class WebSocketServer {
   private Session session;
 
   // 接收sid
-  private String userName = "";
+  private String userName;
 
   /**
    * 连接建立成功调用的方法
@@ -42,6 +42,7 @@ public class WebSocketServer {
   public void onOpen(Session session, @PathParam("userName") String userName) {
     this.session = session;
     this.userName = userName;
+
     webSockets.put(userName, this);
     log.info("有新窗口开始监听:" + userName + ",当前在线人数为" + getOnlineCount());
     try {

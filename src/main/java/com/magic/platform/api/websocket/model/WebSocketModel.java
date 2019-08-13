@@ -11,8 +11,6 @@ import lombok.Data;
  */
 @Data
 public class WebSocketModel {
-  @NotNull(message = "要发送的用户不能为空！")
-  private String toUser;
-  @NotNull(message = "要发送的消息不能为空！")
+  private String toUserName;
   private String message;
 }
