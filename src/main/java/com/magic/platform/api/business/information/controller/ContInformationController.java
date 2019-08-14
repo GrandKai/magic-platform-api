@@ -6,7 +6,7 @@ import com.magic.platform.api.business.information.mapper.custom.entity.ContInfo
 import com.magic.platform.api.business.information.model.ContInformationModel;
 import com.magic.platform.api.business.information.model.ContInformationQueryModel;
 import com.magic.platform.api.business.information.service.ContInformationService;
-import com.magic.platform.api.util.FileUtils;
+import com.magic.platform.api.framework.util.FileUtils;
 import com.magic.platform.core.anotation.OpsLog;
 import com.magic.platform.core.anotation.OpsLogType;
 import com.magic.platform.core.model.RequestModel;

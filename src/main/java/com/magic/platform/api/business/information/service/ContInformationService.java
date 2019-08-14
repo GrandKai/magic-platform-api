@@ -112,7 +112,7 @@ public class ContInformationService {
 
     // 删除旧资讯信息-添加新资讯信息
     ContAssociationQueryModel associationInformation = new ContAssociationQueryModel();
-    associationInformation.setSourceType(com.magic.platform.api.util.Constant.INFORMATION);
+    associationInformation.setSourceType(com.magic.platform.api.framework.util.Constant.INFORMATION);
     associationInformation.setSourceId(informationId);
 
     contAssociationVOMapper.deleteContAssociations(associationInformation);
@@ -120,7 +120,7 @@ public class ContInformationService {
 
     // 删除旧标签信息-添加新标签信息
     ContAssociationQueryModel associationLabel = new ContAssociationQueryModel();
-    associationLabel.setSourceType(com.magic.platform.api.util.Constant.LABEL);
+    associationLabel.setSourceType(com.magic.platform.api.framework.util.Constant.LABEL);
     associationLabel.setSourceId(informationId);
 
     contAssociationVOMapper.deleteContAssociations(associationLabel);

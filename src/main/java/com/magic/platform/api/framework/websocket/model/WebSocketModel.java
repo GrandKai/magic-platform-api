@@ -1,6 +1,5 @@
-package com.magic.platform.api.websocket.model;
+package com.magic.platform.api.framework.websocket.model;
 
-import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 /**

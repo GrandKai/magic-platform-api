@@ -1,4 +1,4 @@
-package com.magic.platform.api.util;
+package com.magic.platform.api.framework.util;
 
 import com.google.common.io.Files;
 import com.magic.platform.api.business.article.model.FileUploadResult;

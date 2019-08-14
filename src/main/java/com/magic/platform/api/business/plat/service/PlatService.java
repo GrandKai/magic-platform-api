@@ -8,7 +8,7 @@ import com.magic.platform.api.business.plat.mapper.custom.entity.PlatVO;
 import com.magic.platform.api.business.plat.model.PlatQueryModel;
 import com.magic.platform.api.business.user.dto.UserDto;
 import com.magic.platform.api.business.user.service.UserService;
-import com.magic.platform.api.exception.BusinessExceptionEnum;
+import com.magic.platform.api.framework.exception.BusinessExceptionEnum;
 import com.magic.platform.core.model.RequestModel;
 import com.magic.platform.entity.mapper.build.dao.PlatMapper;
 import com.magic.platform.entity.mapper.build.entity.Plat;

@@ -4,7 +4,7 @@ import com.magic.platform.api.business.information.mapper.custom.dao.ContAssocia
 import com.magic.platform.api.business.information.mapper.custom.entity.ContInformationSimpleVO;
 import com.magic.platform.api.business.information.model.ContAssociationQueryModel;
 import com.magic.platform.api.business.label.mapper.custom.entity.ContLabelVO;
-import com.magic.platform.api.util.Constant;
+import com.magic.platform.api.framework.util.Constant;
 import com.magic.platform.core.model.ResponseModel;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;

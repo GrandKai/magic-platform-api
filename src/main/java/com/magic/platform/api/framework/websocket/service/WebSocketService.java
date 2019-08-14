@@ -1,7 +1,7 @@
-package com.magic.platform.api.websocket.service;
+package com.magic.platform.api.framework.websocket.service;
 
-import com.magic.platform.api.websocket.config.WebSocketServer;
-import com.magic.platform.api.websocket.model.WebSocketModel;
+import com.magic.platform.api.framework.websocket.config.WebSocketServer;
+import com.magic.platform.api.framework.websocket.model.WebSocketModel;
 import com.magic.platform.core.exception.CustomException;
 import com.magic.platform.core.util.Objects;
 import java.io.IOException;

@@ -4,7 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.magic.platform.api.business.user.model.UserQueryModel;
 import com.magic.platform.api.business.user.model.UserRolesModel;
 import com.magic.platform.api.business.user.service.UserService;
-import com.magic.platform.api.util.ExcelUtil;
+import com.magic.platform.api.framework.util.ExcelUtil;
 import com.magic.platform.core.anotation.OpsLog;
 import com.magic.platform.core.anotation.OpsLogType;
 import com.magic.platform.core.constant.Constant;

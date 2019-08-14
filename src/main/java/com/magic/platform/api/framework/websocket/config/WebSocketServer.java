@@ -1,4 +1,4 @@
-package com.magic.platform.api.websocket.config;
+package com.magic.platform.api.framework.websocket.config;
 
 import java.io.IOException;
 import java.util.Iterator;

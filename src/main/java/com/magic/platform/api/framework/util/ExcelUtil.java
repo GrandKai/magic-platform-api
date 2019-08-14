@@ -1,4 +1,4 @@
-package com.magic.platform.api.util;
+package com.magic.platform.api.framework.util;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

@@ -1,12 +1,10 @@
-package com.magic.platform.api.websocket.controller;
+package com.magic.platform.api.framework.websocket.controller;
 
-import com.magic.platform.api.websocket.model.WebSocketModel;
-import com.magic.platform.api.websocket.service.WebSocketService;
+import com.magic.platform.api.framework.websocket.model.WebSocketModel;
+import com.magic.platform.api.framework.websocket.service.WebSocketService;
 import com.magic.platform.core.model.RequestModel;
 import com.magic.platform.core.model.ResponseModel;
-import com.magic.platform.core.util.Objects;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

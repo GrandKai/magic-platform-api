@@ -1,7 +1,7 @@
 package com.magic.platform.api.business.article.controller;
 
 import com.magic.platform.api.business.article.model.FileUploadResult;
-import com.magic.platform.api.util.FileUtils;
+import com.magic.platform.api.framework.util.FileUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;

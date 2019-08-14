@@ -4,7 +4,7 @@ import com.magic.platform.api.business.article.model.FileUploadResult;
 import com.magic.platform.api.business.catalog.mapper.entity.ContCatalogVO;
 import com.magic.platform.api.business.catalog.model.ContCatalogQueryModel;
 import com.magic.platform.api.business.catalog.service.ContCatalogService;
-import com.magic.platform.api.util.FileUtils;
+import com.magic.platform.api.framework.util.FileUtils;
 import com.magic.platform.core.anotation.OpsLog;
 import com.magic.platform.core.anotation.OpsLogType;
 import com.magic.platform.core.model.RequestModel;

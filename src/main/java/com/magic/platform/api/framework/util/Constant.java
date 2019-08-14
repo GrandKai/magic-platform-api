@@ -1,4 +1,4 @@
-package com.magic.platform.api.util;
+package com.magic.platform.api.framework.util;
 
 /**
  * @Author: Administrator

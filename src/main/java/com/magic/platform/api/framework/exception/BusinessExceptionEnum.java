@@ -1,4 +1,4 @@
-package com.magic.platform.api.exception;
+package com.magic.platform.api.framework.exception;
 
 import com.magic.platform.core.exception.CustomException;
 import lombok.Getter;
